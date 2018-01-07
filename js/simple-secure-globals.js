@@ -66,4 +66,9 @@ var socglobal_reademail_state = {keyforme:'', ivforme:'', entiresecuremessage:''
     tmp_blob_urls:[],   //blob objects for attachments
     contact_keyfile_json: null  /* the contact file for the sender downloaded from MY google drive. will be used for signature verification*/
 };
+
+var socglobal_datapackage={};
+var socglobal_datapackage_data={};
+var socglobal_datapackage_state={};
+
 ///END GLOBAL VARIABLES

@@ -298,6 +298,9 @@ function SOC_sign_out(){
     delete window.socglobal_mycontactslist;
     delete window.socglobal_composestate;
     delete window.socglobal_inboxrefreshed;
+    delete window.socglobal_datapackage;
+    delete window.socglobal_datapackage_data;
+    delete window.socglobal_datapackage_state;
     if(socglobal_reademail_state && socglobal_reademail_state.tmp_blob_urls){
         for(let tmpbloburltodelete of socglobal_reademail_state.tmp_blob_urls){
             window.URL.revokeObjectURL(tmpbloburltodelete);

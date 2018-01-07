@@ -8,13 +8,6 @@
  * 
  */
 
-/**
- * 
- * 
- */
-var socglobal_datapackage={};
-var socglobal_datapackage_data={};
-var socglobal_datapackage_state={};
 
 /**
  * resets state stored in global variables
