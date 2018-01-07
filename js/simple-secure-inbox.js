@@ -142,4 +142,13 @@ function SOC_inbox_loadlabels(){
     }
     socglobal_providerclient.listLabels(SOC_inbox_loadlabels_cb, SOC_inbox_loadlabels_error_cb);
 }
-
+/**
+ * shortcuts for refreshing the inbox
+ * @param {string} filter_str
+ * @returns {void}
+ */
+function SOC_inbox_filter_shortcut(filter_str){
+    let theinput = SOC_gebi('inboxfilterinput');
+    theinput.value = filter_str;
+    SOC_inbox_filterform_submit();
+}

@@ -152,7 +152,7 @@ class SOC_GoogleClient extends SOC_Base{
         SOC_log(5, 'SOC_GoogleClient.listMyKeys', 'Enter'); 
         var request = gapi.client.drive.files.list({
             'orderBy': 'name',
-            'fields': 'files(name,properties(keyname),id,mimeType)',
+            'fields': 'files(name,properties(keyname),id,mimeType,webViewLink)',
             //'q': "mimeType contains '"+SOC_MY_KEY_MIME_TYPE_PREFIX+"' and trashed = false"
             'q': "mimeType = '"+SOC_MY_PRIVATE_KEY_MIME_TYPE+"' and trashed = false"
         });

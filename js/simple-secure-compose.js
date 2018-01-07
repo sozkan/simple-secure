@@ -119,7 +119,7 @@ function SOC_composeemailform_addrecipient_4(imported_crypto_key){
 
 /**
  * remove a contact from the list of added contact
- * @param {string} emailaddr
+ * @param {string} emailaddr : when evaluates to false, enables all buttons
  * @returns {void}
  */
 function SOC_composeemailform_remove_recipient(emailaddr){
@@ -128,9 +128,14 @@ function SOC_composeemailform_remove_recipient(emailaddr){
     let contactbuttons = document.querySelectorAll('#composeemailform_recipientsdiv_table button');
 
     for(let tmpbutton of contactbuttons){
-        if(tmpbutton.textContent == emailaddr){
+        if(emailaddr){
+            if(tmpbutton.textContent == emailaddr){
+                tmpbutton.disabled = false;
+                break;
+            }
+        }
+        else{
             tmpbutton.disabled = false;
-            break;
         }
     }
 }
@@ -177,6 +182,7 @@ function SOC_composeemailform_reset(){
     
     SOC_gebi('composeemail_reset').click();
     SOC_composeemailform_renderrecipients();
+    SOC_composeemailform_remove_recipient(null);
     
     //somehow this didnt work properly 
     //////SOC_gebi('composeemailform').reset();
@@ -327,6 +333,7 @@ function SOC_composeemailform_submit_finished_savedraft(response_fromprovider){
         
         SOC_datapackage_init();
         SOC_composeemailform_reset();
+        SOC_alert('Sent successfully');
     }
     else{
         SOC_updateprogress('info','Error saving draft. Response from email provider= ' + SOC_escapehtml(JSON.stringify(response_fromprovider.result)));
@@ -348,6 +355,7 @@ function SOC_composeemailform_submit_finished(response_fromprovider){
         
         SOC_datapackage_init();
         SOC_composeemailform_reset();
+        SOC_alert('Sent successfully');
     }
     else{
         SOC_updateprogress('info','Error sending the email. Response from email provider= ' + SOC_escapehtml(JSON.stringify(response_fromprovider.result)));

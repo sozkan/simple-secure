@@ -1,9 +1,15 @@
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
 body, html {
   height: 100%;
 }
 body{
     font-family: Arial, Helvetica, sans-serif;    
     font-size:0.9em;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
 }
 input {
     font-family: Arial, Helvetica, sans-serif;    
@@ -12,37 +18,51 @@ h1{
     font-size: 1.2em;
 }
 #maincontainer{
-    
+    /*
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    
+    */
     height: 100%;
 }
 #navigation{   
     width:100%;
     top:0;
     border-bottom:1px solid #034abc;
+    margin:0px 0px 0px 0px;
+    padding:0px 0px 0px 0px;
+}
+#navigation_links a{
+    color: #fff;
+    margin-right: 5px;
+    margin-top:3px;
     margin-bottom:3px;
-    padding-bottom: 3px;
-}
-#navigation a{
-    color: blue;
-    margin-right: 5px;
-}
-#navigation a:hover{
-    color: red;
-    margin-right: 5px;
+    margin-left:3px;
     text-decoration: none;
+    padding-left:5px;
+    padding-right: 5px;
+    display: inline-block;
+}
+#navigation_links a:hover{
+    color: #ffff44;
+}
+#navigation_links{
+    padding:5px 5px 5px 5px;
+    background-color: #444;
 }
 #navigation_userandkeyinfo{
+    border:1px solid #ccc;
     background-color: #f4f4f4;
     display: inline-block;
-    margin-right: 5px;
+    width:100%;
+    padding:5px 5px 5px 5px;
+}
+#navigation_userandkeyinfo div{
 }
 #contents{
-    flex:1;
+    /* flex:1; */
     min-height: 50%;
+    padding:10px 10px 10px 10px;
 }
 #progressupdatediv{
     overflow: auto;
@@ -63,6 +83,7 @@ h1{
 }
 /* shown initially on page load */
 #loginbuttonsdiv{
+    padding:10px 10px 10px 10px;
 }
 #generatekeydiv{
 }
@@ -78,8 +99,19 @@ h1{
     border-bottom: 1px solid #999;
     margin-bottom: 5px;
 }
+#inboxfilterdiv label{
+    display: block;
+}
 #inboxfilterdiv input[type=text]{
     width:50%;    
+}
+#inboxfilterform_shortcutsdiv{
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+#inboxfilterform_shortcutsdiv button{
+    font-size: smaller;
+    margin-right: 5px;
 }
 .inbox-mail{
     margin-bottom: 5px;
@@ -153,7 +185,7 @@ h1{
     color:#150ece;
 }
 #reademailbodydiv{
-    border-top:2px solid #fff;
+    border-top:4px solid #fff;
     border-bottom:2px solid #fff;
 }
 
@@ -236,15 +268,11 @@ an individual label
 #reademailcleartextdiv{
     min-height: 100px;
     white-space: pre-wrap;
-    border-top:1px solid #000;
-    border-bottom:1px solid #000;
     padding:2px 2px 2px 2px;
 }
 #reademailsecuremsgdiv{
     min-height: 100px;
-    white-space: pre-wrap;
-    border-top:1px solid #000;
-    border-bottom:1px solid #000;
+    white-space: pre-wrap;    
     padding:2px 2px 2px 2px;
 }
 
@@ -260,6 +288,11 @@ an individual label
     margin-top:5px;
     margin-bottom:5px;
     color:#262328;
+    padding-top:3px;
+    padding-bottom: 3px;
+    padding-left: 3px;
+    background-color:#f4f4f4;
+    border:1px solid #ddd;
 }
 
 .email-headers{    
@@ -363,7 +396,9 @@ input [type=submit]{
 #composeemailform_recipientsdiv div, #composeemailform_added_recipientsdiv div{
     float:left;
 }
-
+#composeemailform .form-row{
+    margin-top:5px;
+}
 #currentloadedkeyinfodiv{
     font-size: smaller;
     padding-top:5px;
@@ -428,22 +463,31 @@ input [type=submit]{
     padding-bottom:5px;
 }
 
-#selectprivatekeyandloadform dt{
+.myexistingkeypairs_keysradio_div{
+    margin-bottom: 4px;
+    border: 1px solid #ccc;
+    width:100%;
     background-color: #f4f4f4;
+    padding-left: 5px;
+    padding-bottom: 2px;
+    padding-top: 2px;
 }
-#selectprivatekeyandloadform dt:hover{
+.myexistingkeypairs_keysradio_div:hover{
     color:blue; 
+    background-color: #f0f0f0;
 }
-
+.myexistingkeypairs_keysradio_div label{
+    width:100%;
+}
 .tip-box{
     font-size: smaller;
     margin-top:5px;
 }
 
 #progressupdatediv_textarea{
-    width:95%;
+    width:100%;
     height: 80%;
-    min-height: 200px;
+    min-height: 400px;
 }
 
 .sha256hash{
@@ -453,16 +497,15 @@ input [type=submit]{
     padding-right:2px;
 }
 
-.sha256hash div{
+.sha256hash span{
     margin-left:2px;
-    float: left;
     padding-bottom:2px;
     padding-top:2px;
     padding-left:2px;
     padding-right:2px;
 }
 
-.sha256hash div:hover{
+.sha256hash span:hover{
     color:#fff;
     background-color:#000;
 }

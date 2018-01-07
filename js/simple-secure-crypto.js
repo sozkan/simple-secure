@@ -86,7 +86,7 @@ class SOC_Base{
     }
     
     /**
-     * 
+     * NOT USED will be removed
      * @param string errorcode
      * @param {any} rawerror
      * @returns void
@@ -145,7 +145,7 @@ class SOC_RSA_OAEP extends SOC_Base{
         })
         .catch(error=>{
             SOC_log(1, 'SOC_RSA_OAEP.generateNewPair', error);
-            currentinstance.raiseError('SOC_RSA_OAEP:newpair', error);
+            error_callback(error);
         });
         SOC_log(5, 'SOC_RSA_OAEP.generateNewPair', 'Exit');
     }
@@ -159,7 +159,7 @@ class SOC_RSA_OAEP extends SOC_Base{
         }).
         catch(privateError=>{
             SOC_log(1, 'SOC_RSA_OAEP.generateNewPair_Step_2', 'Error exporting the private key=' + privateError);
-            currentinstance.raiseError('SOC_RSA_OAEP:generateNewPair_Step_2', privateError);
+            error_callback(privateError);
         });
         SOC_log(5, 'SOC_RSA_OAEP.generateNewPair_Step_2', 'Exit');
     }
@@ -175,7 +175,7 @@ class SOC_RSA_OAEP extends SOC_Base{
         })
         .catch(publicError=>{
             SOC_log(1, 'SOC_RSA_OAEP.generateNewPair_Step_3', 'Error exporting the public key=' + publicError);
-            currentinstance.raiseError('SOC_RSA_OAEP:generateNewPair_Step_3', publicError);
+            error_callback(publicError);
             //callback_onfinish(false);
         });                    
         SOC_log(5, 'SOC_RSA_OAEP.generateNewPair_Step_3', 'Exit');
@@ -367,7 +367,7 @@ class SOC_RSASSA_PKCS1_v1_5 extends SOC_Base{
         })
         .catch(error=>{
             SOC_log(1, 'SOC_RSASSA_PKCS1_v1_5.generateNewPair', error);
-            currentinstance.raiseError('SOC_RSASSA_PKCS1_v1_5:newpair', error);
+            error_callback(error);
         });
         SOC_log(5, 'SOC_RSASSA_PKCS1_v1_5.generateNewPair', 'Exit');
     }
@@ -381,7 +381,7 @@ class SOC_RSASSA_PKCS1_v1_5 extends SOC_Base{
         }).
         catch(privateError=>{
             SOC_log(1, 'SOC_RSASSA_PKCS1_v1_5.generateNewPair_Step_2', 'Error exporting the private key=' + privateError);
-            currentinstance.raiseError('SOC_RSASSA_PKCS1_v1_5:generateNewPair_Step_2', privateError);
+            error_callback('SOC_RSASSA_PKCS1_v1_5:generateNewPair_Step_2', privateError);
         });
         SOC_log(5, 'SOC_RSASSA_PKCS1_v1_5.generateNewPair_Step_2', 'Exit');
     }
@@ -397,8 +397,7 @@ class SOC_RSASSA_PKCS1_v1_5 extends SOC_Base{
         })
         .catch(publicError=>{
             SOC_log(1, 'SOC_RSASSA_PKCS1_v1_5.generateNewPair_Step_3', 'Error exporting the public key=' + publicError);
-            currentinstance.raiseError('SOC_RSASSA_PKCS1_v1_5:generateNewPair_Step_3', publicError);
-            //callback_onfinish(false);
+            error_callback(publicError);            
         });                    
         SOC_log(5, 'SOC_RSASSA_PKCS1_v1_5.generateNewPair_Step_3', 'Exit');
     }
@@ -416,7 +415,7 @@ class SOC_RSASSA_PKCS1_v1_5 extends SOC_Base{
     beginImportJwkPrivateKey(key_jwk_obj, callback_onfinish, error_callback){
         SOC_log(5, 'SOC_RSASSA_PKCS1_v1_5.beginImportJwkPrivateKey', 'Enter');
         let usages = ["sign"];
-        //key_jwk_obj.key_ops = usages;
+
         let import_promise = window.crypto.subtle.importKey('jwk', key_jwk_obj, this.algorithm, false, usages);
         import_promise.then(cryptokey=>{
             SOC_log(5, 'SOC_RSASSA_PKCS1_v1_5.beginImportJwkPrivateKey', 'Imported the key');
@@ -560,11 +559,11 @@ class SOC_PBKDF2 extends SOC_Base{
                 //TODO improve. just adding this here to avoid making more changes after adding a step 2.5 between steps 2 and 3
                 socglobal_stateobject.pbdkf2_key_from_password = importedkey;
                 //move on to the next step
-                this.step_2(importedkey, salt_buffer, iterations, callback_onfinish);
+                this.step_2(importedkey, salt_buffer, iterations, callback_onfinish, error_callback);
             })
             .catch(error=>{
                 SOC_log(1, 'Error at SOC_PBKDF2.generateKey', 'ImportKey error=' + error);
-                this.raiseError('SOC_PBKDF2:generateKey', error);
+                error_callback(error);
             });
         SOC_log(5, 'SOC_PBKDF2.generateKey', 'Exit');
     }
@@ -578,7 +577,7 @@ class SOC_PBKDF2 extends SOC_Base{
      * @param function() callback_onfinish
      * @returns void
      */
-    step_2(importedkey, salt_buffer, iterations, callback_onfinish){
+    step_2(importedkey, salt_buffer, iterations, callback_onfinish, error_callback){
         SOC_log(1, 'SOC_PBKDF2.step_2', 'Enter');
         window.crypto.subtle.deriveKey(
             { "name": 'PBKDF2', "salt": salt_buffer, "iterations": iterations+100, "hash": 'SHA-256'},
@@ -589,12 +588,12 @@ class SOC_PBKDF2 extends SOC_Base{
         ).then(derivedkey=>{
             SOC_log(5, 'SOC_PBKDF2.step_2', 'Derived the key, calling finished');            
             //this.step_3(derivedkey, callback_onfinish);
-            this.finished(derivedkey, callback_onfinish);
+            this.finished(derivedkey, callback_onfinish, error_callback);
         }            
         )
         .catch(error=>{
                 SOC_log(1, 'SOC_PBKDF2.step_2', error);
-                this.raiseError('SOC_PBKDF2:step_2', error);
+                error_callback(error);
             }
         );        
         SOC_log(5, 'SOC_PBKDF2.step_2', ' Exit');
@@ -607,7 +606,7 @@ class SOC_PBKDF2 extends SOC_Base{
      * @param function callback_onfinish
      * @returns void
      */
-    step_3(derivedkey, callback_onfinish){
+    step_3(derivedkey, callback_onfinish, error_callback){
         SOC_log(5, 'SOC_PBKDF2.step_3 Enter');
         window.crypto.subtle.exportKey('raw', derivedkey)
         .then(exportedkey=>{
@@ -616,7 +615,7 @@ class SOC_PBKDF2 extends SOC_Base{
         }
         ).catch(error=>{
                 SOC_log(1, 'SOC_PBKDF2.step_3', error);
-                this.raiseError('SOC_PBKDF2:step_3', error);
+                error_callback(error);
             }
         );
         SOC_log(5, 'SOC_PBKDF2.step_3', 'Exit');
@@ -784,46 +783,46 @@ class SOC_AES_Encrypt extends SOC_AES{
         );
         SOC_log(5, 'SOC_AES_Encrypt.beginGenerateEncryptExport', 'Got the key promise');
         keyPromise.then(key=>{
-            this.step_2(key);
+            this.step_2(key, callback_onfinish, error_callback);
         }).
         catch(error=>{
             SOC_log(5, 'SOC_AES_Encrypt.beginGenerateEncryptExport', 'Error at keyPromise.catch: ' + error);
-            this.raiseError('SOC_AES_Encrypt:begin', error);            
+            error_callback(error);            
         });
         SOC_log(5, 'SOC_AES_Encrypt.beginGenerateEncryptExport', 'Exit');            
     }
 
-    step_2(key){
+    step_2(key, callback_onfinish, error_callback){
         SOC_log(5, 'SOC_AES_Encrypt.step_2','Enter');
         let encPromise = window.crypto.subtle.encrypt(this.alg, key, this.plaintextbuffer);    
         encPromise.then(ciphertext_buffer=>{
             SOC_log(5, 'SOC_AES_Encrypt.step_2: Calling step_3 inside encPromise.then');
-            this.step_3(ciphertext_buffer, key);
+            this.step_3(ciphertext_buffer, key, callback_onfinish, error_callback);
         })
         .catch(encerror=>{
             SOC_log(5, 'SOC_AES_Encrypt.step_2: Error at encPromise.catch: ' + encerror);
-            this.raiseError('SOC_AES_Encrypt:step_2', encerror);
+            error_callback(encerror);
         });
         SOC_log(5, 'SOC_AES_Encrypt.step_2', 'Exit');
     }
 
-    step_3(ciphertext_buffer, key){
+    step_3(ciphertext_buffer, key, callback_onfinish, error_callback){
         SOC_log(5, 'SOC_AES_Encrypt.step_3','Enter');
         window.crypto.subtle.exportKey('raw', key).then(
             exportedkey=>{
                 SOC_log(5, 'SOC_AES_Encrypt.step_3', 'exportKey.then called');                
                 //soc_encrypt_finished
-                this.finished(ciphertext_buffer, exportedkey);
+                this.finished(ciphertext_buffer, exportedkey, callback_onfinish, error_callback);
             }
         )
         .catch(error=>{
             SOC_log(1, 'SOC_AES_Encrypt.step_3', error);
-            this.raiseError('SOC_AES_Encrypt:step_3', error);
+            error_callback(error);
         });
         SOC_log(5, 'SOC_AES_Encrypt.step_3', 'Exit');
     }
 
-    finished(ciphertext_buffer, exportedkey){        
+    finished(ciphertext_buffer, exportedkey, callback_onfinish, error_callback){        
         SOC_log(1, 'SOC_AES_Encrypt.finished','Enter');
         /*        
         let ciphertextb64= this.b64Encode(new Uint8Array(ciphertext_buffer));
@@ -831,6 +830,6 @@ class SOC_AES_Encrypt extends SOC_AES{
         let ivb64 = this.b64Encode(new Uint8Array(this.iv));
         */
         SOC_log(5, 'SOC_AES_Encrypt.finished','Exit');
-        this.finishedcb(ciphertext_buffer, this.iv, exportedkey);
+        callback_onfinish(ciphertext_buffer, this.iv, exportedkey);
     }
 }

@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="css/main.css">
         <script src="js/simple-secure-ui.js"></script>
         <script src="js/simple-secure-base64.js"></script>
-        <script src="js/simple-secure-main.js"></script>
+        <script src="js/simple-secure-crypto.js"></script>
         <script src="js/simple-secure-email.js"></script>
         <script src="js/simple-secure-google-client.js"></script>
         <script src="js/simple-secure-data-package.js"></script>        
@@ -59,7 +59,7 @@
 <!-- End of templates -->
 <!-- begin unauthenticated contents -->
 <div id="loginbuttonsdiv">
-    <div style="text-align:center; width:100%; padding:30px 30px 30px 30px">
+    <div style="text-align:center; width:100%;">
         <button id="btnlogingoogle" onclick="SOC_sign_in()"><img src="img/google.png" border='0'></button>
     </div>
     <div>
@@ -101,16 +101,18 @@
         <div id="navigation">
             <nav>
                 <div id="navigation_userandkeyinfo">
-                    <div id="currentuseremailspan"></div>
-                    <div id="currentloadedkeyinfodiv"></div>
+                    <div>
+                        <div id="currentuseremailspan" style="float:left"></div>
+                        <a href="#logout" style="float:right">Logout</a>
+                    </div>                    
+                    <div id="currentloadedkeyinfodiv" style="clear:both"></div>
                 </div>
-                <div style="clear:both">
-                    <a href="#logout">Logout</a>
+                <div id="navigation_links" style="clear:both">
+                    <a href="#inbox">Inbox</a>  
+                    <a href="#compose">Compose</a>
+                    <a href="#importcontactkey">Contacts</a>
                     <a href="#mykeys">My Keys</a>
                     <a href="#generatekey">New Key</a>
-                    <a href="#importcontactkey">Contacts</a>
-                    <a href="#compose">Compose New Mail</a>
-                    <a href="#inbox">Inbox</a>  
                     <a href="#logs">Logs</a>  
                 </div>
             </nav>
@@ -200,10 +202,15 @@
                     <h1>Compose</h1>
                     <form method="post" autocomplete="off"  name="composeemailform" id="composeemailform" onsubmit="try{SOC_composeemailform_submit(); } catch(ex){SOC_log(1,'composeemailform onsubmit',ex);} return false;">
                         <div class="form-row">                            
-                            <div class="form-row-value">
-                                <label>Contacts (Click contacts to add to recipients)</label>
+                            <label>Contacts (Click contacts to add as recipients)</label>
+                            <div class="form-row-value">                                
                                 <div id="composeemailform_recipientsdiv">You don't have any contacts</div>                                 
-                                <label class="email-secure-part">Recipients</label>
+                            </div>
+                        </div>
+
+                        <div class="form-row">                            
+                            <label class="email-secure-part">Recipients</label>
+                            <div class="form-row-value">                            
                                 <div class="email-secure-part" id="composeemailform_added_recipientsdiv">No recipients added</div>                                 
                             </div>
                         </div>
@@ -279,10 +286,21 @@
                     <h1>Inbox</h1>
                     <div id="inboxfilterdiv">
                         <form method="post" autocomplete="off" name="inboxfilterform" id="inboxfilterform" onsubmit="try{SOC_inbox_filterform_submit();} catch(ex){SOC_log(1,'inboxfilterform onsubmit',ex);} return false;">
-                        Filter:
-                        <input type="text" name="inboxfilterinput" id="inboxfilterinput" value="label:inbox is:unread">
-                        <input type="submit" value="Refresh">
-                        <div class="input-sidenote">Same syntax as gmail. Max 20 results will be shown</div>
+                            <label>
+                            Filter:
+                            </label>
+                            <input type="text" name="inboxfilterinput" id="inboxfilterinput" value="label:inbox is:unread">
+                            <input type="submit" value="Refresh">                        
+
+                            <div id="inboxfilterform_shortcutsdiv" class="input-sidenote">
+                                Same syntax as gmail. Max 20 results will be shown.
+                                Quick filters:
+                                <button onclick="SOC_inbox_filter_shortcut('label:inbox is:unread')">Unread in inbox</button>
+                                <button onclick="SOC_inbox_filter_shortcut('label:inbox')">All in inbox</button>
+                                <button onclick="SOC_inbox_filter_shortcut('is:unread')">Unread</button>
+                                <button onclick="SOC_inbox_filter_shortcut('')">All</button>
+                            </div>
+
                         </form>
                     </div>
                     <div id="inboxmessagelistdiv">

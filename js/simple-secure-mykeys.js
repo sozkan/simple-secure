@@ -25,23 +25,24 @@ function SOC_listmykeys_callback(results){
         return;
     }
     let generatedhtml = '';
-    generatedhtml+='<dl>';
+    generatedhtml+='<div>';
     socglobal_mykeyslist = new Array();
     for(let tmpfile of results.files){
         socglobal_mykeyslist.push({
             fileId:tmpfile.id,
             fileName:tmpfile.name,
             mimeType:tmpfile.mimeType,
-            keyname: tmpfile.properties.keyname
+            keyname: tmpfile.properties.keyname,
+            webViewLink: tmpfile.webViewLink
         });
-        generatedhtml+='<dt>';
+        generatedhtml+='<div class="myexistingkeypairs_keysradio_div">';
             generatedhtml+='<label><input type="radio" name="selectedprivatekey" value="'+SOC_escapehtml(tmpfile.id)+'">';
             generatedhtml+=SOC_escapehtml(tmpfile.properties.keyname);
-            generatedhtml+='</label>';
-        generatedhtml+='</dt>';
-        generatedhtml+='<dd>File name in drive: '+SOC_escapehtml(tmpfile.name)+'</dd>';
+        generatedhtml+='<div class="input-sidenote">File in drive: <a href="'+tmpfile.webViewLink+'" target="_blank">'+SOC_escapehtml(tmpfile.name)+'</a></div>';
+        generatedhtml+='</label>';        
+        generatedhtml+='</div>';        
    }
-    generatedhtml+='</dl>';
+    generatedhtml+='</div>';
     
     
     targetdiv.innerHTML = generatedhtml;
@@ -251,12 +252,11 @@ function SOC_loadmyprivatekey_submit_8(publickeys_sha256hash_bytes){
     let publickeycheckinfo = SOC_sha256_to_manualcheckvalues(publickeys_sha256hash_bytes);
     
     let targetdiv = SOC_gebi('currentloadedkeyinfodiv');
-    let htmlstr = 'Current Key Information: '+
-                    ' Keyname: <b>'+SOC_escapehtml(socglobal_stateobject.mycurrentloadedkey_name)+'</b>'+ 
-                    ' Generated: '+SOC_escapehtml(socglobal_stateobject.mycurrentloadedkey_generated)+ 
-                    ' <div>Checksum 1: <b>' + publickeycheckinfo.checksum +'</b> '+
-                    ' Checksum 2: <b>'+publickeycheckinfo.foursum+'</b></div> '+
-                    ' <div class="sha256hash"><div><b>Hash:</b></div><div>'+ publickeycheckinfo.hash.join('</div><div>')+'</div></div>';
+    let htmlstr =   ' <span>Current Key:<b>'+SOC_escapehtml(socglobal_stateobject.mycurrentloadedkey_name)+'</b></span>'+ 
+                    ' <span>Generated: '+SOC_escapehtml(socglobal_stateobject.mycurrentloadedkey_generated)+ '</span>'+
+                    ' <span>Checksum 1: ' + publickeycheckinfo.checksum +'</span> '+
+                    ' <span>Checksum 2: '+publickeycheckinfo.foursum+'</span> '+
+                    ' <span class="sha256hash"><b>Hash:</b> <span>'+ publickeycheckinfo.hash.join('</span> <span>')+'</span></span>';
     targetdiv.innerHTML = htmlstr;
     //resetting state?? 
     socglobal_stateobject = {};

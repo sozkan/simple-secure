@@ -79,7 +79,7 @@ function SOC_reademail_2(response_fromprovider){
     generatedhtml+='<div id="reademailbodydiv" class="email-body">';
     let insecurebodypart = SOC_reademail_get_insecurebody(response_fromprovider);
     
-    generatedhtml+='<h3>Insecure Message(Not Encrypted)</h3><div id="reademailcleartextdiv"></div>';
+    generatedhtml+='<h3>Insecure Message (Not Encrypted or Signed)</h3><div id="reademailcleartextdiv"></div>';
     
     let securemessagepart = SOC_reademail_get_securemessage(response_fromprovider);
     if(securemessagepart.body.attachmentId){
