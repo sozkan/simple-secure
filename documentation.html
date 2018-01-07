@@ -76,6 +76,45 @@
             Only tested with the latest versions of Chrome and Firefox on windows 10 and android(chrome only).            
         </div>
         <h2>
+            Setting Up Your Own Copy
+        </h2>
+        <div>
+            You are strongly encouraged to use your own personal instance of this application. 
+            You can do it by deploying it on your local https web server. 
+            <br>
+            <b>
+            Https is required by the webcrypto API, this application won't work when loaded over http or 
+            when using the file:/// protocol. 
+            </b>
+            <br>
+            To install your own instance : 
+            <ol>
+                <li>Download the application package from Github. </li>
+                <li>Copy the following files and folders into a folder on your web server: 
+                    <ul>
+                        <li>google.html</li>
+                        <li>img folder</li>
+                        <li>css folder</li>
+                        <li>js folder</li>
+                    </ul>
+                </li>
+                <li>
+                    Obtain your own Google API key and client id. 
+                    See <a target="_blank" href="https://developers.google.com/identity/sign-in/web/devconsole-project">https://developers.google.com/identity/sign-in/web/devconsole-project</a>
+                    for more information.
+                </li>
+                <li>
+                    Edit js/simple-secure-app-configuration.js file and replace the default values with your client ID and API key.
+                    Save the file and that's all.
+                    <br>
+                    <em>
+                    If you use the default client and API id, your usage statistics will appear in the project owner's 
+                    Google account.
+                    </em>
+                </li>
+            </ol>
+        </div>
+        <h2>
             Creating a key
         </h2>
         <div>

@@ -160,6 +160,7 @@ function SOC_switch_uistate(locationhash){
         case '#importcontactkey':
             if(!socglobal_myprivatekey){
                 SOC_alert('You MUST load your key first');
+                window.location.hash='#mykeys';
                 return;
             }
             socglobal_providerclient.listContacts(SOC_contacts_loaded_cb, SOC_contacts_loaded_error_cb);            
@@ -176,6 +177,7 @@ function SOC_switch_uistate(locationhash){
         case '#compose':
             if(!socglobal_myprivatekey){
                 SOC_alert('You MUST load your key first');
+                window.location.hash='#mykeys';
                 return;
             }
             SOC_gebi('maincontainer').style.display='';
@@ -191,6 +193,7 @@ function SOC_switch_uistate(locationhash){
         case '#inbox':
             if(!socglobal_myprivatekey){
                 SOC_alert('You MUST load your key first');
+                window.location.hash='#mykeys';
                 return;
             }
             ///load inbox if it's not yet loaded.
@@ -210,6 +213,7 @@ function SOC_switch_uistate(locationhash){
         case '#reademail':
             if(!socglobal_myprivatekey){
                 SOC_alert('You MUST load your key first');
+                window.location.hash='#mykeys';
                 return;
             }
             SOC_gebi('maincontainer').style.display='';

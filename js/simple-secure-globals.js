@@ -12,11 +12,6 @@ const SOC_CONTACT_KEY_MIME_TYPE = 'application/vnd.sozkan.simple-secure.contact.
 const SOC_SIMPLE_SECURE_MSG_MIME = 'application/vnd.sozkan.simple-secure.message';
 const SOC_SIMPLE_SECURE_SIGNATURE_MIME = 'application/vnd.sozkan.simple-secure.signature';
 
-//Google API configuration
-//CONFIGURE THIS. REPLACE IT WITH YOUR OWN CLIENT ID
-const SOC_GOOGLE_CLIENT_ID = '249594767542-rlfh95rojf8slgv0pi44vcl7octfsdsk.apps.googleusercontent.com';
-//CONFIGURE THIS. REPLACE IT WITH YOUR OWN API KEY
-const SOC_GOOGLE_API_KEY = 'AIzaSyCmM2Zvxz9TmjY6KjftC4C4RXEvWLTe8OE';
 
 const SOC_GOOGLE_DISCOVERY_DOCS = [
                                 "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
