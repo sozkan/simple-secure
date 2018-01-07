@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Simple and Secure</title>
+        <meta charset="UTF-8">
+        <meta name="author" content="Serkan Özkan">
+	<meta name="description" content="Simple Secure strong crypto for everyone with a modern browser and a Google account(for now)">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/simple-secure-ui.js"></script>
+        <script src="js/simple-secure-base64.js"></script>
+        <script src="js/simple-secure-main.js"></script>
+        <script src="js/simple-secure-email.js"></script>
+        <script src="js/simple-secure-google-client.js"></script>
+        <script src="js/simple-secure-data-package.js"></script>        
+        <script src="js/simple-secure-compose.js"></script>
+        <script src="js/simple-secure-importcontactkey.js"></script>
+        <script src="js/simple-secure-inbox.js"></script>
+        <script src="js/simple-secure-mykeys.js"></script>
+        <script src="js/simple-secure-generatekey.js"></script>        
+        <script src="js/simple-secure-reademail.js"></script>
+
+        <script src="js/simple-secure-globals.js"></script>
+        
+    </head>
+    <body onload="SOC_body_onload()">
+<!-- templates. these are not visible by default but their innerHTMLs will be copied around as a template -->
+<div id="keysecretsform_snippet" class="htmlsnippet">
+    
+    <div class="form-row">
+        <label for="keysecretsform_password">
+            Password:                             
+        </label>
+        <div class="form-row-value">
+            <textarea name="password"  id="keysecretsform_password"></textarea>
+            <div class="input-sidenote">
+                Note that this is a large textarea to encourage you to enter a really long password (passtext?).
+                Your password can contain any characters.
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <label>Enter a number</label>
+        <div id="keysecretsform_numbersdiv" class="form-row-value">
+            <input type="number" name="keysecretsform_number" value="100" autocomplete="off" >
+            <div class="input-sidenote">
+                    Enter a number between 100 and 10000 (ten thousand) and make sure that you do NOT forget this number.
+                    You will be asked to enter this number when loading your key. It's used as a kind of a password 
+                    (the number of iterations for some cryptographic operations).
+            </div>
+        </div>        
+    </div>
+</div>
+
+<div id="reademaildiv_template" style="display: none;">
+    <div id="reademaildiv_header">
+    </div>    
+</div>
+<!-- End of templates -->
+<!-- begin unauthenticated contents -->
+<div id="loginbuttonsdiv">
+    <div style="text-align:center; width:100%; padding:30px 30px 30px 30px">
+        <button id="btnlogingoogle" onclick="SOC_sign_in()"><img src="img/google.png" border='0'></button>
+    </div>
+    <div>
+        This application provides end-to-end (browser to browser, even Google won't have 
+        access to the encrypted messages) encryption and integrity verification 
+        (by using electronic signatures) for Gmail users.
+        It does not require any installations. 
+        All you need is a modern browser. You can use it on multiple devices without hassle.
+    </div>
+    <div>
+        If you haven't done it already, you will be prompted to authorize this application to 
+        perform some actions on your behalf. It does not mean that this application will have access to 
+        your account without your consent or when you are offline etc.
+        It will only work when you have a valid Google session in this browser instance.
+        Without an active session, this application won't have any access to your account.
+        <p>
+            Feel free to review the source of this page and all included javascript files.
+        </p>
+    </div>
+    <div>
+        How it works:
+        <ol>
+            <li>Sign in with your Google account</li>
+            <li>If you don't have an existing key: 
+                Create a new key. Your key will be stored in your Google drive</li>
+            <li>Load (unlock) your key (it will be downloaded from your Google drive and loaded)</li>
+            <li>Add contacts / Read encrypted email / Send emails</li>                    
+        </ol>
+        Other things to note : 
+        <ul>
+            <li>There is no central key authority, every one will be their own key authorities. </li>
+            <li>You can create a new key pair and share the public part with anyone. </li>
+        </ul>
+        See <a href="documentation.html">the documentation page</a> for more information.
+    </div>
+</div>
+<!-- end unauthenticated contents -->
+<div id="maincontainer" style='display:none'>
+        <div id="navigation">
+            <nav>
+                <div id="navigation_userandkeyinfo">
+                    <div id="currentuseremailspan"></div>
+                    <div id="currentloadedkeyinfodiv"></div>
+                </div>
+                <div style="clear:both">
+                    <a href="#logout">Logout</a>
+                    <a href="#mykeys">My Keys</a>
+                    <a href="#generatekey">New Key</a>
+                    <a href="#importcontactkey">Contacts</a>
+                    <a href="#compose">Compose New Mail</a>
+                    <a href="#inbox">Inbox</a>  
+                    <a href="#logs">Logs</a>  
+                </div>
+            </nav>
+            
+        </div>
+        <div id="contents">
+            <div class="ui-card-div" id="myexistingkeypairsdiv">
+                <h1>My Keys</h1>
+                Select a key to load. You must load a key before you can compose or read emails.
+                <form autocomplete="off" method="post" name="selectprivatekeyandloadform" id="selectprivatekeyandloadform" onsubmit="try{SOC_loadmyprivatekey_submit();} catch(ex){SOC_log(1,'selectprivatekeyandloadform onsubmit',ex);} return false;">
+                    <div id="myexistingkeypairs_keyslistdiv">Loading keys...</div>
+                    <div class="informative-msg">Enter your key password and the correct number to load the key</div>
+                    <script>
+                        SOC_includesnippet('keysecretsform_snippet', true);
+                    </script>
+                    <div class="form-buttons"><input type="submit" value="Load Selected Key" id="selectprivatekeyandloadform_submit"></div>
+                </form>
+                <div class="tip-box">
+                    Tip: To delete a key,
+                    simply delete the corresponding .privatekey file from your Google Drive. 
+                    (Renaming the file or moving it to a different folder won't work)
+                </div>
+            </div>
+                <div id="generatekeydiv" class="ui-card-div">                    
+                    <div id="createnewkeypairformdiv"> 
+                        <h1>Create New Key</h1>
+                        <div class="informative-msg">
+                        You can create as many key as you like but please note that normally you should have only one  
+                        key at a time, unless your keys were compromised and you generated new keys etc. 
+                        Don't make life harder for yourself by creating multiple keys.
+                        The application is not tested with many keys as it's considered as an unlikely scenario however it's
+                        expected to work.
+                        </div>
+                        <form method="post" autocomplete="off"  name="createnewkeypairform" id="createnewkeypairform" onsubmit="try{SOC_createnewkeypairform_submit();} catch(ex){SOC_log(1,'createnewkeypairform onsubmit',ex); } return false;">
+                            <div class="form-row">
+                                <label for="keysecretsform_name">
+                                    Key Name:  
+                                </label>
+                                <div class="form-row-value">
+                                    <input type="text" name="name" id="keysecretsform_name">
+                                    <div class="input-sidenote">A name for the new key. Will also be used in the Google Drive file name</div>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                SOC_includesnippet('keysecretsform_snippet', true);
+                            </script>
+                            <div class="form-buttons">
+                                <input type="submit" id="createnewkeypairform_submit" value="Generate New Key">
+                                <div class="input-sidenote">
+                                     (New keys will be saved in your Google drive automatically)
+                                </div>
+                            </div>
+                            <div id="createnewkeypairform_saveresultdiv" class="informative-msg">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="importcontactkeydiv" class="ui-card-div">
+                    <h1>Contacts</h1>
+                    <div id="myexistingcontactsdiv">
+                        Loading contacts ... Your contacts will appear here once they are loaded from your Google drive. 
+                    </div>
+
+                    <div id="addnewcontactkeydiv">
+                        <form method="post" autocomplete="off"  name="addnewcontactkeyform" id="addnewcontactkeyform" onsubmit="try{SOC_addnewcontactkeyform_submit(); } catch(ex){SOC_log(1,'addnewcontactkeyform onsubmit',ex);} return false;">
+                            <div class="form-header">
+                                Add New Contact
+                            </div>
+                            <div class="form-row">                                
+                                <input type="file" name="addnewcontactkeyfileinput" id="addnewcontactkeyfileinput">
+                                <div class="input-sidenote">Please select a .publickey file and click Next to add a new contact</div>
+                            </div>
+                                <div class="form-buttons">
+                                    <input type="submit" value="Next">
+                                </div>
+                            <div id="addnewcontactkeyform_filedetails"></div>
+                        </form>  
+                        <div class="tip-box">
+                            Tip: To delete a contact,
+                            delete the contact file from your Google drive. 
+                            (Just renaming the file or moving it to another folder won't work.)
+                        </div>
+                    </div>
+
+                </div>
+                <div id="composediv" class="ui-card-div">
+                    <h1>Compose</h1>
+                    <form method="post" autocomplete="off"  name="composeemailform" id="composeemailform" onsubmit="try{SOC_composeemailform_submit(); } catch(ex){SOC_log(1,'composeemailform onsubmit',ex);} return false;">
+                        <div class="form-row">                            
+                            <div class="form-row-value">
+                                <label>Contacts (Click contacts to add to recipients)</label>
+                                <div id="composeemailform_recipientsdiv">You don't have any contacts</div>                                 
+                                <label class="email-secure-part">Recipients</label>
+                                <div class="email-secure-part" id="composeemailform_added_recipientsdiv">No recipients added</div>                                 
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Other Recipients (cc)</label>
+                            <div class="form-row-value email-insecure-part">
+                                <input type="text" name="otherrecipients" id="composeemail_otherrecipients_input" autocomplete="off" >
+                                <div class="input-sidenote">
+                                    Add recipients without keys here, <u>separated by space characters</u>. 
+                                    They won't be able to read secure contents or verify signatures.
+                                    They will be able to read insecure parts (subject and the insecure message field)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Subject: </label>
+                            <div class="form-row-value email-insecure-part">
+                                <input type="text" name="subject" id="composeemail_subject_txt" class="cleartextfield" autocomplete="off" >                        
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Insecure Message</label>
+                            <div class="form-row-value email-insecure-part">
+                                <textarea name="clearTextMessage" id="composeemail_cleartextmsg_txt" class="cleartextfield"></textarea>                      
+                                <div class="input-sidenote">
+                                &quot;Insecure Message&quot; part will not be encrypted, will be readable without keys.
+                                (Things like, see attached secure message etc)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Secure Message</label>
+                            <div class="form-row-value email-secure-part">
+                                <textarea name="encryptedMessage" id="composeemail_securemsg_txt" class="encryptedfield"></textarea>                        
+                                <div class="input-sidenote">
+                                    &quot;Secure Message&quot; part will be encrypted. May contain sensitive data.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label>Attachments </label>
+                            <div class="form-row-value email-secure-part">
+                                <div class="input-sidenote">
+                                    Attachments will also be encrypted, they may contain sensitive data.
+                                    WARNING! Adding large attachments will cause your browser to freeze or become completely unresponsive.
+                                    Try to keep total email size small, i.e a few MBs. This is not an application for transferring large files.
+                                </div>
+                                <div id="composeemail_attachmentsdiv" class="form-row-value email-secure-part">
+                                    <input type="file" name="addnewcontactkeyfileinput1" id="addnewcontactkeyfileinput1">
+                                    <input type="file" name="addnewcontactkeyfileinput2" id="addnewcontactkeyfileinput2">
+                                    <input type="file" name="addnewcontactkeyfileinput3" id="addnewcontactkeyfileinput3">
+                                    <input type="file" name="addnewcontactkeyfileinput4" id="addnewcontactkeyfileinput4">
+                                    <input type="file" name="addnewcontactkeyfileinput5" id="addnewcontactkeyfileinput5">
+                                    <input type="file" name="addnewcontactkeyfileinput6" id="addnewcontactkeyfileinput6">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-buttons">
+                            <input type="hidden" name="clickedsubmitbuttonvalue" value="send">
+                            <input  name="reset" type="reset" id="composeemail_reset" value="Reset" title="Reset the form">
+                            <input onclick="document.forms['composeemailform'].clickedsubmitbuttonvalue.value='draft'" name="submit" type="submit"  id="composeemail_savedraft" value="Save as draft" title="The message will be saved as a draft. YOU WILL NOT BE ABLE TO MODIFY OR ADD ENCRYPTED CONTENT LATER">
+                            <input  name="submit" type="submit" id="composeemail_submit" value="Send" title="Send the email immediately">
+                        </div>
+                        <div class="informative-msg">
+                            <b>Send</b> : The message will be sent immediately. 
+                            <br>
+                            <b>Save as draft and send later via gmail</b>: The message will be saved as a draft. 
+                            YOU WILL NOT BE ABLE TO MODIFY OR ADD ENCRYPTED CONTENT LATER
+                        </div>
+                    </form>
+                </div>
+                <div id="inboxdiv" class="ui-card-div">                    
+                    <h1>Inbox</h1>
+                    <div id="inboxfilterdiv">
+                        <form method="post" autocomplete="off" name="inboxfilterform" id="inboxfilterform" onsubmit="try{SOC_inbox_filterform_submit();} catch(ex){SOC_log(1,'inboxfilterform onsubmit',ex);} return false;">
+                        Filter:
+                        <input type="text" name="inboxfilterinput" id="inboxfilterinput" value="label:inbox is:unread">
+                        <input type="submit" value="Refresh">
+                        <div class="input-sidenote">Same syntax as gmail. Max 20 results will be shown</div>
+                        </form>
+                    </div>
+                    <div id="inboxmessagelistdiv">
+
+                    </div>
+                </div>
+                <div id="reademaildiv" class="ui-card-div"></div>
+                <div id="progressupdatediv" class="ui-card-div">
+                    <h1>Logs <button onclick="progressupdatediv_textarea_copy()" style="float:right;">Copy All Logs</button></h1>
+                    
+                    <textarea id="progressupdatediv_textarea"></textarea>
+                    <!--
+                    <table id="progressupdatediv_table"></table>
+                    -->
+                </div>
+        </div> <!-- enc of contents -->        
+</div>        
+
+
+<div id="fullscreenalertdiv" style="display:none" onclick="SOC_alert_close()">
+    <div id="fullscreenalertdiv_msgbox" onclick="SOC_alert_close()">
+        <div id="fullscreenalertdiv_msgbox_msg"></div>
+        <div id="fullscreenalertdiv_buttons">
+            <button onclick="SOC_alert_close()">Close</button> 
+            <div class="input-sidenote">(Or press Esc or click/tap anywhere on the screen)</div>
+        </div>
+    </div>
+        
+</div>
+
+<script async defer src="https://apis.google.com/js/api.js"
+    onload="this.onload=function(){}; SOC_gapi_handleclientload();"
+    onreadystatechange="if (this.readyState === 'complete') this.onload()">
+</script>
+
+    </body>
+</html>

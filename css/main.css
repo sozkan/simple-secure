@@ -1,0 +1,490 @@
+body, html {
+  height: 100%;
+}
+body{
+    font-family: Arial, Helvetica, sans-serif;    
+    font-size:0.9em;
+}
+input {
+    font-family: Arial, Helvetica, sans-serif;    
+}
+h1{
+    font-size: 1.2em;
+}
+#maincontainer{
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    
+    height: 100%;
+}
+#navigation{   
+    width:100%;
+    top:0;
+    border-bottom:1px solid #034abc;
+    margin-bottom:3px;
+    padding-bottom: 3px;
+}
+#navigation a{
+    color: blue;
+    margin-right: 5px;
+}
+#navigation a:hover{
+    color: red;
+    margin-right: 5px;
+    text-decoration: none;
+}
+#navigation_userandkeyinfo{
+    background-color: #f4f4f4;
+    display: inline-block;
+    margin-right: 5px;
+}
+#contents{
+    flex:1;
+    min-height: 50%;
+}
+#progressupdatediv{
+    overflow: auto;
+    font-size: 0.8em;    
+    background-color: #fff;
+    width:100%;
+    height: 100%;
+}
+#progressupdatediv div{
+    display: block;
+}
+#progressupdatediv_table td{
+    text-align: left;
+    vertical-align: top;
+}
+#progressupdatediv_table tr:hover{
+    background-color: #eee;
+}
+/* shown initially on page load */
+#loginbuttonsdiv{
+}
+#generatekeydiv{
+}
+#importcontactkeydiv{
+}
+#composediv{
+}
+#inboxdiv{    
+}
+#inboxmessagelistdiv{
+}
+#inboxfilterdiv{
+    border-bottom: 1px solid #999;
+    margin-bottom: 5px;
+}
+#inboxfilterdiv input[type=text]{
+    width:50%;    
+}
+.inbox-mail{
+    margin-bottom: 5px;
+    border-bottom: 1px solid #999;
+    cursor: pointer;
+}
+.inbox-mail b, .email-headers b{
+    display: inline-block;        
+    width: 70px;
+    font-weight: normal;
+    color: #02051c;
+}
+.inbox-mail:hover{
+    background-color: #f4f4f4;
+}
+.ui-card-div{
+    transition-duration: 1s;
+    transition-property: all;  
+    width: 100%;
+    height: 100%;
+}
+#addnewcontactkeyfileinput_warn{
+    
+}
+
+.htmlsnippet{
+    display:none;
+}
+
+/* things that will be included in emails in clear text */
+.cleartextfield{
+    border:1px solid red;
+}
+/* things that will NOT be included in emails in clear text */
+.encryptedfield{
+    border:1px solid greenyellow;
+}
+.email-insecure-part{
+    color:#910f1c;
+}
+
+.email-secure-part{
+    color:#217c08;
+}
+.error{
+    color:red;
+}
+.warn{
+    color:#990099;
+}
+.info{
+    color:#000;
+}
+.debug{
+    color:#888;
+}
+
+
+.email-subject{
+    clear:both;
+    font-size:1.1em;
+    font-weight: bold;
+}
+.reademail-contents-div  .email-subject{
+    font-size:1.25em;
+    padding-top:5px;
+    padding-bottom:5px;
+    border-bottom:#3d0e70;
+    width:100%;
+    text-align: left;
+    color:#150ece;
+}
+#reademailbodydiv{
+    border-top:2px solid #fff;
+    border-bottom:2px solid #fff;
+}
+
+.email-from{    
+    margin-right: 5px;
+}
+.email-to{    
+    margin-right: 5px;
+}
+.email-cc{
+    margin-right: 5px;    
+}
+.email-date{
+}
+.email-snippet{
+    clear:both;
+}
+.email-labels{
+    text-transform: lowercase;
+}
+.email-labels b{
+    text-transform: capitalize;
+}
+
+.email-labels .UNREAD{
+    /*
+    background-color: green;
+    color: #fff;
+    */
+    color: green;
+    padding:1px 1px 1px 1px;
+    font-size: smaller;
+}
+.email-labels .STARRED{
+    /*
+    color:#fff;
+    background-color: darkorange;
+    */
+    color: darkorange;
+    padding:1px 1px 1px 1px;
+    font-size: smaller;
+}
+.email-labels .INBOX{
+    /*
+    color:#fff;
+    background-color: darkviolet;    */
+    color: darkviolet;
+    padding:1px 1px 1px 1px;
+    font-size: smaller;
+}
+
+.email-labels .DRAFT{
+    /*
+    color:#fff;
+    background-color: mediumblue;    
+    */
+    color: mediumblue;    
+    padding:1px 1px 1px 1px;
+    font-size: smaller;
+}
+
+.email-labels .SENT{
+    /*color:#fff;
+    background-color: slategrey;    */
+    color: slategrey;    
+    padding:1px 1px 1px 1px;
+    font-size: smaller;
+}
+/** 
+an individual label 
+*/
+.email-label{
+    margin-right: 5px;
+}
+
+#reademaildiv{    
+    padding:5px 5px 5px 5px;
+    min-height: 50%;
+}
+#reademailcleartextdiv{
+    min-height: 100px;
+    white-space: pre-wrap;
+    border-top:1px solid #000;
+    border-bottom:1px solid #000;
+    padding:2px 2px 2px 2px;
+}
+#reademailsecuremsgdiv{
+    min-height: 100px;
+    white-space: pre-wrap;
+    border-top:1px solid #000;
+    border-bottom:1px solid #000;
+    padding:2px 2px 2px 2px;
+}
+
+/* email details container */
+.reademail-contents-div{
+    
+}
+
+.reademail-contents-div h3{
+    font-size: 1.0em; 
+    width: 100%;
+    text-align: left;
+    margin-top:5px;
+    margin-bottom:5px;
+    color:#262328;
+}
+
+.email-headers{    
+    padding:0px 0px 0px 0px;
+}
+
+.email-body{
+    padding:0px 0px 0px 0px;
+}
+.email-attachments{
+    border:1px solid red;
+}
+
+.error-msg{
+    color:red;
+}
+
+.informative-msg{
+    text-align: justify;    
+    line-height: 1.45em;
+    border: 1px solid #eee;
+    background-color: #fafafc;
+    padding:10px 10px 10px 10px;
+    font-size: 0.95em;
+
+}
+
+fieldset{
+    border:none;
+}
+fieldset > label{
+    width:100px;
+}
+
+input [type=submit]{
+    text-align: center;
+}
+
+.form-header{
+    font-size:1.1em;
+    font-weight: bold;    
+}
+.form-buttons{
+    text-align: center;
+    border-top:1px solid #ddd;
+    padding:5px 5px 5px 5px;
+}
+
+.form-buttons input{
+    margin-right: 5px;
+}
+
+.form-row{
+    
+}
+.form-row-label{
+    width:120px;
+}
+.form-row-value{
+}
+.input-sidenote{
+    font-size: small;
+    color:#999;
+}
+
+#addnewcontactkeydiv{
+    border:1px solid #ccc;
+    margin:5px 5px 5px 5px;
+    padding:5px 5px 5px 5px;
+}
+
+#composeemail_cleartextmsg_txt{
+    width:90%;
+    height:90%;
+    min-height: 5em;
+}
+
+#composeemail_securemsg_txt{
+    width:90%;
+    height:90%;
+    min-height: 10em;    
+}
+
+#composeemail_subject_txt{
+    width:90%;    
+}
+#composeemail_otherrecipients_input{
+    width:90%;    
+}
+#composeemailform{
+    
+}
+#composeemailform label{
+    margin-top:5px;
+}
+
+#composeemailform_recipientsdiv{
+    max-height: 200px;
+    overflow: auto;
+}
+#composeemailform_recipientsdiv div, #composeemailform_added_recipientsdiv div{
+    float:left;
+}
+
+#currentloadedkeyinfodiv{
+    font-size: smaller;
+    padding-top:5px;
+    padding-bottom:5px;
+}
+
+.signature-valid{
+    background-color: #0f8904;
+    color:white;
+    font-weight: bold;
+    text-align: center;
+    font-size:1.1em;
+    padding:5px 5px 5px 5px;
+}
+
+.signature-invalid{
+    background-color: #c60101;
+    color:white;
+    font-weight: bold;
+    text-align: center;
+    font-size:1.1em;
+    padding:5px 5px 5px 5px;
+}
+
+#fullscreenalertdiv{
+    width:100%;
+    height: 100%;
+    z-index: 99;   
+    text-align: center;
+    vertical-align: middle;
+    overflow-x: hidden;
+        position: fixed;
+    top:0;
+    left: 0;
+    transition: 0.5s;
+    background-color: #fff;    
+}
+
+#fullscreenalertdiv_msgbox{
+    position: relative;
+    background-color: #fff;
+    top: 25%;
+    min-height: 40%;
+    width: 100%;
+    margin-top: 30px;
+}
+
+#fullscreenalertdiv_buttons{
+    /*
+    position: fixed;
+    width: 100%;
+    */
+    margin-top:20px;
+}
+#keysecretsform_password{
+    width:90%;
+}
+#myexistingcontactsdiv{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-top:5px;
+    padding-bottom:5px;
+}
+
+#selectprivatekeyandloadform dt{
+    background-color: #f4f4f4;
+}
+#selectprivatekeyandloadform dt:hover{
+    color:blue; 
+}
+
+.tip-box{
+    font-size: smaller;
+    margin-top:5px;
+}
+
+#progressupdatediv_textarea{
+    width:95%;
+    height: 80%;
+    min-height: 200px;
+}
+
+.sha256hash{
+    padding-bottom:2px;
+    padding-top:2px;
+    padding-left:2px;
+    padding-right:2px;
+}
+
+.sha256hash div{
+    margin-left:2px;
+    float: left;
+    padding-bottom:2px;
+    padding-top:2px;
+    padding-left:2px;
+    padding-right:2px;
+}
+
+.sha256hash div:hover{
+    color:#fff;
+    background-color:#000;
+}
+
+#createnewkeypairform_saveresultdiv{
+    line-height: 1.5em;
+    color:blue;
+}
+/*
+input[type="radio"] {
+  -webkit-appearance: checkbox;
+  -moz-appearance: checkbox;   
+  -ms-appearance: checkbox;    
+  appearance: checkbox;     
+
+}
+*/
+
+#btnlogingoogle{
+    background-color: #fff;
+    border:0;
+    padding: 0px 0px 0px 0px;
+    cursor:pointer;
+    margin:  0px 0px 0px 0px;
+}

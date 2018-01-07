@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Simple-secure : Documentation</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/docs.css">
+    </head>
+    <body>
+        <h1>How it works</h1>
+        <div>
+            <ul>
+                <li>
+                    <b>Pure javascript:</b> This is a pure client side javascript application. 
+                    It does not include/require any server side code. 
+                    (Initially I was hoping that it would work locally (over file:/ protocol) but 
+                    Google APIs don't work when the page is loaded over the file protocol. 
+                    And https is requried for the <a href="https://www.w3.org/TR/WebCryptoAPI/" target="_blank">Web Crypto API</a>.) 
+                    <br>
+                    But you can run the application from your local https server. 
+                    You will need a Google API key and a client id to do so. (See https://console.developers.google.com)
+                    
+                </li>
+                <li>
+                    <b>No unnecessary dependencies:</b> 
+                        The only external dependency is the Google client API 
+                        (<a href="https://developers.google.com/drive/v3/web/about-sdk" target="_blank">Drive API v3</a>
+                        and 
+                        <a href="https://developers.google.com/gmail/api/v1/reference/" target="_blank">Gmail API v1</a>). 
+                        The application does not load any other external javascript or similar code. 
+                        It does not include any minified code. 
+                        It doesn't even use any javascript libraries such as jquery or similar.  
+                        This is intentional to make the code as readable as possible but <em>please 
+                        also note that due to the complex nature of the crypto APIs the code is not as simple 
+                        as intended (it's kind of a promise-callback-wait hell. It's complicated for sure.)
+                        </em>.
+
+                </li>
+                <li>
+                    <b>Web Crypto (window.crypto.subtle) API:</b>             
+                        All crypto functions are based on the Web Crypto (window.crypto.subtle) API. 
+                        No other library, third party code etc is used for cryptographic operations.            
+                        You will be safe as long as Chrome (or others) implement crypto functions properly.
+                </li>
+                <li>
+                    <b>Only for modern browsers:</b>
+                        It's not intended to work on older browsers. Only the latest versions of Chrome and Firefox are tested. 
+                </li>
+                <li>
+                    <b>Only Google APIs:</b>
+                        <ul>
+                            <li>The application only uses Google Drive and Gmail REST APIs to access your Google account. 
+                                No other protocol, client, library etc is used. 
+                            </li>
+                            <li>Authentication and authorization are also completely handled by Google APIs 
+                                (standard Google oauth flows).
+                            </li>
+                            <li>The following Google drive and gmail API permissions are required for the proper functioning 
+                                of this application.
+                                Users will be prompted by Google to grant these permissions to the application.
+                                <ul>
+                                    <li>https://www.googleapis.com/auth/drive.file : Required for Google drive operations</li>
+                                    <li>https://www.googleapis.com/auth/gmail.send : Required for sending emails</li>
+                                    <li>https://www.googleapis.com/auth/gmail.readonly : Required for reading emails</li>
+                                    <li>https://www.googleapis.com/auth/gmail.modify : Required for saving email drafts</li>
+                                </ul>
+                            </li>                        
+                        </ul>
+                </li>
+            </ul>
+        </div>
+        <h2>
+            Creating a key
+        </h2>
+        <div>
+            You can create new encryption and signing keys using the application. 
+            By default it will create an encryption/decryption pair
+            (<a href="https://www.w3.org/TR/WebCryptoAPI/#rsa-oaep" target="_blank">RSA-OAEP</a> 2048 bits with SHA-256)  
+            and a signing/verification pair 
+            (<a href="https://www.w3.org/TR/WebCryptoAPI/#rsassa-pkcs1" target="_blank">RSASSA-PKCS1-v1_5</a> 2048 bits with SHA-256). 
+            The same key pair is not used for signing/verification and encryption/decryption.
+            <br>
+            The application does not support PGP or similar and does not plan to support them in the future either.
+            <br>
+            The goal of this application is to provide simple and free end to end encryption and signing for any one. 
+            <p>
+                A very rough summary of the key generation process is as follows:
+            </p>
+            <ol>
+                <li>Generate new signing key pair using window.crypto.subtle.generateKey with RSASSA-PKCS1-v1_5 2048 &amp; SHA-256, exportable=true, usages=sign, verify</li>
+                <li>Export the private key from step 1 using window.crypto.subtle.exportKey in jwk format</li>
+                <li>Export the public key from step 1 using window.crypto.subtle.exportKey in jwk format</li>
+
+
+                <li>Generate new encryption/decryption key pair using window.crypto.subtle.generateKey with RSA-OAEP 2048 &amp; SHA-256,  exportable=true, usages=encrypt, decrypt</li>
+                <li>Export the private key from step 3 using window.crypto.subtle.exportKey in jwk format</li>
+                <li>Export the public key from step 3 using window.crypto.subtle.exportKey in jwk format</li>
+
+
+                <li>Generate PBKDF2 cryptokey using the password entered by the user and calling window.crypto.subtle.importKey where exportable=false, usages=['deriveBits', 'deriveKey']</li>
+                <li>Derive AES-CBC key using the PBKDF2 key from the previous step by calling window.crypto.subtle.deriveKey with the pbkdf2 key, 
+                    using (number of iterations selected by the user + 100) 
+                    iterations and hash=SHA-256 </li>
+
+                <li>Then derive the IV bits using the same PBKDF2 key by calling window.crypto.subtle.deriveBits using 
+                    number of iterations selected by the user (note that it's +100 above, 
+                    so there are 100 iterations between the IV and the key. So it should be good enough?) and hash=SHA-256.
+                    The salt for the deriveKey and deriveBits calls is also generated based on the selected number of iterations. 
+                    (It's not random, it's just better than nothing)
+                </li>
+
+                <li>Create a json object which includes the exported jwk keys. stringify and base64 encode it</li>
+                <li>window.crypto.subtle.encrypt the base64 encoded json string using the AES key and IV </li>
+                <li>Base64 encode the output, add it to a json and store the file in Google Drive</li>
+
+            </ol>
+            <p>
+                Since the keys are stored in Google drive, an attacker would need to have access to both your Google account and the password 
+                you enter in this application. 
+            </p>
+        </div>
+        <h2>
+            Key storage
+        </h2>
+        <div>
+            Your private keys will be automatically uploaded to your google drive. 
+            Private keys will be encrypted as described above.             
+            <br>
+            You can move or even rename key files in your drive. They are stored and retrieved by using custom mime types.
+            The following mime types are used for files stored in Google drive. 
+            <ul>
+                <li><span class="special">application/vnd.sozkan.simple-secure.my.privatekey</span></li>
+                <li><span class="special">application/vnd.sozkan.simple-secure.my.publickey</span></li>
+                <li><span class="special">application/vnd.sozkan.simple-secure.contact.publickey</span></li>
+            </ul>
+        </div>
+        <h2>
+            Adding contacts
+        </h2>
+        <div>
+            You will obtain public key files from your contacts and import them using this application. 
+            Contacts' keys will also be stored in your Google drive. 
+            You can move or even rename key files in your drive. They are stored and retrieved by using custom mime types. 
+            <br>
+            Contact keys will be signed by using your signing private key and the signature will be verified 
+            every time contact keys are used.
+            <br>
+            For example when you receive an email from Bob, 
+            <ol>
+                <li>The application will download Bob's public key file from <u>your</u> Google drive </li>
+                <li>Verify the signature on the contact key file using your signing key (contact file will be signed by your key when you add the contact)</li>
+                <li>Use Bob's key to verify a message signature if and only if the signature was verified in the previous step</li>
+            </ol>
+            This will prevent an attacker who has access to your Google drive to impersonate Bob by changing his key file in your Google drive.
+        </div>
+        <h2>
+            Sending emails
+        </h2>
+        <div>
+            Secure emails will be just regular emails with two additional attachments named simple-secure.message
+            and simple-secure.signature. 
+            Regular email body and subject will not be encrypted. 
+            Only the simple-secure.message attachment will contain a text part and attachments, all of which will be 
+            encrypted and signed.            
+            <br>
+            
+        </div>
+        <br>
+        <div>
+            You will be allowed to send secure emails to only contacts with a public key file in your Google drive.
+            You can cc others but they won't be able to read the secure contents.
+            Email encryption works as follows : 
+            <ol>
+                <li>
+                    A new random AES-CBC (128 bits) key will be generated (not a derived key) by calling 
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/generateKey" target="_blank">window.crypto.subtle.generateKey</a>
+                </li>
+                <li>
+                    A random initialization vector will be generated by calling window.crypto.getRandomValues
+                </li>
+                <li>
+                    Email body and attachments will be wrapped into a JSON object and stringified                    
+                </li>
+                <li>
+                    The string will be encrypted using the AES key and the initialization vector 
+                </li>
+                <li>
+                    The AES key and the initialization vector will be encrypted by using public keys of each recipient
+                    (if you have 3 recipients, there will be 3 separate encrypted keys and IVs in the final package)
+                    An attacker who has access to the encrypted package will need to crack both the AES key and the IV to be 
+                    able to decrypt the secure message. 
+                </li>
+                <li>
+                    The final JSON object will include keys, IVs and the encrypted data
+                </li>
+                <li>
+                    The JSON object will be stringified and base64 encoded. 
+                    This string will be attached to the email message as a file named <span class="special">simple-secure.message</span>
+                    (with <span class="special">application/vnd.sozkan.simple-secure.message</span> mime type).
+                </li>
+                <li>
+                    The base64 encoded string from the previous step will be signed by using your private key.
+                    And the signature will be attached to the email as a file named <span class="special">simple-secure.signature</span> 
+                    (with <span class="special">application/vnd.sozkan.simple-secure.signature</span> mime type).
+                </li>
+                <li>
+                    The email will be sent using the Gmail REST API. (No other protocols will be used)
+                </li>
+            </ol>            
+        </div>
+        <h2>
+            Receiving emails
+        </h2>
+        <div>
+            The inbox page will show you a list of only the emails with a <span class="special">simple-secure.message</span> attachment with 
+            <span class="special">application/vnd.sozkan.simple-secure.message</span> mime type.
+            You should continue to use the standard Gmail UI for anything else. (This is not a Gmail UI replacement)
+            <br>
+            <ol>
+                <li>
+                    Emails with simple-secure.message attachments will be loaded using the Gmail REST API. (No other protocols will be used)
+                </li>
+                <li>
+                    When viewing an email, the application will download attachments (simple-secure.message and .signature files) 
+                    using the Gmail REST API.
+                </li>
+                <li>
+                    simple-secure.message AES key and initialization vector for the current user will be located in 
+                    simple-secure.message file and they will be decrypted using the current user's private key.
+                    (using window.crypto.subtle.decrypt with the current user's private key)
+                </li>
+                <li>
+                    Then simple-secure.message contents (email message text and attachments) will be decrypted using the AES key and 
+                    the initialization vector. 
+                    (using window.crypto.subtle.decrypt with the decrypted AES key and the initialization vector)
+                </li>
+                <li>
+                    Then the application will download sender's ('From' email header) public key contact file from your Google drive.
+                    (using Google drive API)
+                </li>
+                <li>
+                    Signature on the contact file will be verified using your signing private key.
+                    (using window.crypto.subtle.verify)
+                </li>
+                <li>
+                    If the signature on the contact file which includes the sender's public keys can be validated, then the sender's 
+                    public key will be used to verify the signature in 'simple-secure.signature'.
+                    (using window.crypto.subtle.verify)
+                </li>
+                <li>
+                    A warning will be displayed if the signature can't be verified.
+                </li>
+            </ol>
+        </div>
+        
+        
+        <h2>
+            General Security Considerations
+        </h2>
+        <div>
+            <ul>
+                <li>
+                    The application does not load any external files, scripts or similar <u>except</u> the Google javascript API.
+                </li>
+                <li>
+                    The application does not run/eval any external code/data.
+                </li>
+                <li>
+                    To prevent cross site scripting attacks, document.createTextNode is used heavily with additional replacing of quote characters.
+                    The application does not support any html content in email messages. Only text/plain is supported. 
+                </li>
+                <li>
+                    All temporary state variables are deleted on logout. The page is also reloaded to reset any browser internal state 
+                    (keys and cryptographic material).
+                </li>
+                <li>
+                    When reading emails attachments are stored as temporary Blob objects which will be deleted on page 
+                    unload or when another email message is loaded (reasonably short storage of data in clear text). 
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>

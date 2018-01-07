@@ -1,0 +1,40 @@
+body{
+    font-family: sans-serif;        
+    font-size:0.9em;
+    padding-top:10px;
+    padding-left:10px;
+    padding-right:10px;
+    padding-bottom:10px;
+    
+}
+h1{
+    color:#000088;
+}
+
+h2{
+    color:#000088;
+}
+div{
+    text-align: justify;    
+    line-height: 1.45em;
+    border: 1px solid #eee;
+    border-radius: 0.5em 0.2em;
+    background-color: #fafafc;
+    padding:10px 10px 10px 10px;
+}
+
+b{
+}
+.special{
+    
+    font-family: monospace;
+     
+    background-color: #ffffcc;
+    border:1px solid #ffff44;
+    /*
+    background-color: #eeeeff;
+    border:1px solid #aaaaff;
+    */
+    padding-left: 2px;
+    padding-right: 2px;
+}
