@@ -199,7 +199,7 @@ function SOC_composeemailform_reset(){
 function SOC_composeemailform_submit(){
     SOC_log(5, 'SOC_composeemailform_submit', 'Enter');   
     
-    if(socglobal_composestate.recipients.length<1){
+    if(Object.keys(socglobal_composestate.recipients).length<1){
         SOC_alert('You didn\'t add any recipients. At least one recipient must be selected to send or save as draft.');
         return;
     }
