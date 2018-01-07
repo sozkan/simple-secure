@@ -11,14 +11,15 @@ End-to-end encryption for Gmail (for now)
 - No dependencies except the Google javascript API, no hidden dependencies, no npm, no minified code
 - Uses only the official Google API to access your Google/Gmail accounts
 
-# Live demo : 
-[https://simple-secure.com]
+## Live demo : 
+https://simple-secure.com
+
 YOU ARE STRONGLY ENCOURAGED TO USE HOST YOUR OWN COPY OF THE APPLICATION. THE DEMO SITE IS JUST A DEMO.
 For maximum security download and deploy the application on your own https server. Deploying your own instance is quite easy. See documentation.html for more information.
 
-# Known issues : 
-- Max raw email size allowed by Google is 30MBs but trying to attach or read attached large files may kill your browser may be very slow. Try to keep max email size around 5MBs. 
+## Known issues : 
+- Max raw email size allowed by Google is 30MBs but trying to attach or read attached large files may kill your browser or may be very slow. Try to keep max email size around 5MBs. 
 
-# TODO/Roadmap: 
+## TODO/Roadmap: 
 - I will develop a desktop app which will use the same keys for encrypting/decrypting and/or signing/verifying larger files
 
