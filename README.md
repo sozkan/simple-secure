@@ -1,7 +1,7 @@
 # simple-secure
 End-to-end encryption for Gmail (for now)
 
-# Quick Summary : 
+## Quick Summary : 
 - Real end-to-end encryption: When sending an email encrypted contents will be created in your browser, and when reading encrypted contents will be decrypted in your browser. Even Google won't have access to encrypted contents.
 - Pure client side javascript. No installations. The only requirement is a modern browser (only latest versions of Chrome or Firefox)
 - Uses only the webcrypto API for cryptographic operations
