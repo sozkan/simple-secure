@@ -333,7 +333,7 @@ function SOC_composeemailform_submit_finished_savedraft(response_fromprovider){
         
         SOC_datapackage_init();
         SOC_composeemailform_reset();
-        SOC_alert('Sent successfully');
+        SOC_alert('Saved draft successfully');
     }
     else{
         SOC_updateprogress('info','Error saving draft. Response from email provider= ' + SOC_escapehtml(JSON.stringify(response_fromprovider.result)));
