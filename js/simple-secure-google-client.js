@@ -87,7 +87,8 @@ class SOC_GoogleClient extends SOC_Base{
 
     sendEmail(emailcontents_str, finished_callback, error_callback){
         SOC_log(5, 'SOC_GoogleClient.sendEmail', 'Enter'); 
-        var base64UrlEncodedEmail = socglobal_base64.encodeStringURISafe(emailcontents_str);
+        let b64url = new SOC_base64URL();
+        let base64UrlEncodedEmail = b64url.encodeString(emailcontents_str);
         gapi.client.gmail.users.messages.send({
             'userId': 'me',
             'resource': {
@@ -113,7 +114,8 @@ class SOC_GoogleClient extends SOC_Base{
      */
     saveDraft(emailcontents_str, finished_callback, error_callback){
         SOC_log(5, 'SOC_GoogleClient.saveDraft', 'Enter'); 
-        var base64EncodedEmail = socglobal_base64.encodeStringURISafe(emailcontents_str);
+        let b64url = new SOC_base64URL();
+        let base64EncodedEmail = b64url.encodeString(emailcontents_str);
         gapi.client.gmail.users.drafts.create({
             'userId': 'me',
             'resource': {
