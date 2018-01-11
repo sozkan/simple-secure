@@ -123,7 +123,9 @@ function SOC_composeemailform_addrecipient_4(imported_crypto_key){
  * @returns {void}
  */
 function SOC_composeemailform_remove_recipient(emailaddr){
-    delete socglobal_composestate.recipients[emailaddr];
+    if(emailaddr && socglobal_composestate.recipients[emailaddr]){
+        delete socglobal_composestate.recipients[emailaddr];
+    }        
     SOC_composeemailform_renderrecipients();
     let contactbuttons = document.querySelectorAll('#composeemailform_recipientsdiv_table button');
 
