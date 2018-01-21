@@ -244,7 +244,7 @@ function SOC_readmail_data_decrypted_cb(data_cleartext_buffer){
             */
             let htmlescapedattachmentname = SOC_escapehtml(tmpattachmentname);
             let tmpfirstcolonpos =  securemsg_json_obj.attachments[tmpattachmentname].indexOf(':');
-            let tmpfirstsemicolonpos =  securemsg_json_obj.attachments[tmpattachmentname].indexOf(',');
+            let tmpfirstsemicolonpos =  securemsg_json_obj.attachments[tmpattachmentname].indexOf(';');
             let tmpfirstcommapos = securemsg_json_obj.attachments[tmpattachmentname].indexOf(',');
             let tmpattachmentcontenttype = securemsg_json_obj.attachments[tmpattachmentname].substring(tmpfirstcolonpos+1, tmpfirstsemicolonpos);
             let blobforattachment = new Blob(
