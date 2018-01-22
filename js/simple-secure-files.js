@@ -679,11 +679,10 @@ function SOC_files_edit_submit_8_encryption_finished(){
                 signature_value: socglobal_fileedit_state.signature_b64
             }
     };
-    console.log(filedata);
+    
     let filedata_str = JSON.stringify(filedata);
     //file_id, filecontents_str, filename, original_mimetype, finished_callback, error_callbak
-    console.log('socglobal_fileedit_state in SOC_files_edit_submit_8_encryption_finished');
-    console.log(socglobal_fileedit_state);
+
     socglobal_providerclient.saveFile(fileid, filedata_str, 
                                             socglobal_fileedit_state.filename, 
                                             socglobal_fileedit_state.mimetype, 
@@ -693,7 +692,7 @@ function SOC_files_edit_submit_8_encryption_finished(){
 
 function SOC_files_edit_submit_finished(response_fromprovider){
     SOC_updateprogress('info', 'Finished saving the file.');
-    console.log(response_fromprovider);
+    //console.log(response_fromprovider);
     if(response_fromprovider.result && response_fromprovider.result.id){
         SOC_files_editbinaryfileform_reset();
         SOC_files_edittextfileform_reset();
