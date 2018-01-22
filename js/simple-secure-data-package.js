@@ -74,8 +74,7 @@ function SOC_datapackage_addattachment(){
     
 function SOC_datapackage_addattachment_success(filereader_event){
     SOC_log(5,'SOC_datapackage_addattachment_success','Enter');
-    socglobal_datapackage_data.attachments[socglobal_datapackage_state.current_filename] = filereader_event.srcElement.result;
-    SOC_log(5,'SOC_datapackage_addattachment_success',socglobal_datapackage_state.current_filename+'='+filereader_event.srcElement.result);
+    socglobal_datapackage_data.attachments[socglobal_datapackage_state.current_filename] = filereader_event.srcElement.result;    
     SOC_datapackage_addattachment();    //process remaining attachments if any
 }
 function SOC_datapackage_addattachment_error(filereader_event){
