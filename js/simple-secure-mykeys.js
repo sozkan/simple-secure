@@ -226,7 +226,7 @@ function SOC_loadmyprivatekey_submit_6(imported_signing_key){
     
 }
 /**
- * Imported the public key
+ * Imported my signing public key
  * now we will calculate the hash and checksum for the public key so that we can tell others what 
  * the checksum for our key is
  * @param {CryptoKey} imported_public_key
@@ -243,7 +243,9 @@ function SOC_loadmyprivatekey_submit_7(imported_public_key){
 
 
 /**
- * Finally the import process ends here
+ * called after the sha256 hash for the imported key file is calculated
+ * note that it does not end here, we are now going to load the public key 
+ * for encryption
  * @param {CryptoKey} imported_public_key
  * @returns {void}
  */
@@ -258,12 +260,27 @@ function SOC_loadmyprivatekey_submit_8(publickeys_sha256hash_bytes){
                     ' <span>Checksum 2: '+publickeycheckinfo.foursum+'</span> '+
                     ' <span class="sha256hash"><b>Hash:</b> <span>'+ publickeycheckinfo.hash.join('</span> <span>')+'</span></span>';
     targetdiv.innerHTML = htmlstr;
+    
+    //now base64 decode my encryption public key and import it. this key will be used to encrypt files
+    let encryptionpublickey_str = socglobal_base64.decodeAsString(socglobal_stateobject.mypublickeys_json_obj.encryption);    
+    let encryptionpublickey_json_obj = JSON.parse(encryptionpublickey_str);
+    let socrsaoaep = new SOC_RSA_OAEP();
+    socrsaoaep.beginImportJwkPublicKey(encryptionpublickey_json_obj, SOC_loadmyprivatekey_submit_9, SOC_loadmyprivatekey_submit_error_cb);
+        
+}
+/**
+ * finally all keys are loaded
+ * @param {CryptoKey} imported_enryption_publickey
+ * @returns {void}
+ */
+function SOC_loadmyprivatekey_submit_9(imported_enryption_publickey){
     //resetting state?? 
     socglobal_stateobject = {};
     SOC_selectprivatekeyandloadform_reset();    
+    socglobal_mypublickey_forencryption = imported_enryption_publickey;
+    SOC_updateprogress('info','Finished loading all required keys. Ready to send or read secure emails and files.');    
+    SOC_alert('Loaded my keys. Ready to send/read emails or read/write files.');
     
-    SOC_updateprogress('info','Finished loading all required keys. Ready to send or read secure emails.');    
-    SOC_alert('Loaded my private key. Ready to send or read emails.');
 }
 
 /**

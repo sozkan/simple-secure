@@ -61,6 +61,7 @@ h1{
 }
 #contents{
     /* flex:1; */
+    height: 70%;
     min-height: 50%;
     padding:10px 10px 10px 10px;
 }
@@ -422,7 +423,14 @@ input [type=submit]{
     font-size:1.1em;
     padding:5px 5px 5px 5px;
 }
-
+.signature-unknown{
+    background-color: #999;
+    color:white;
+    font-weight: bold;
+    text-align: center;
+    font-size:1.1em;
+    padding:5px 5px 5px 5px;
+}
 #fullscreenalertdiv{
     width:100%;
     height: 100%;
@@ -530,4 +538,74 @@ input[type="radio"] {
     padding: 0px 0px 0px 0px;
     cursor:pointer;
     margin:  0px 0px 0px 0px;
+}
+
+/* container for a file in #files*/
+.file-item-div{
+    width: 100%;
+    padding:5px 5px 5px 5px;
+    border:1px solid #ddd;
+    clear: both;
+    cursor: pointer;
+}
+.file-item-div:hover{
+    background-color: #f4f4f4;
+}
+.file-name{
+    font-weight: bold;
+    width:100%;
+}
+.file-properties{
+    
+}
+.file-property{
+    color:#999;
+    font-size: smaller;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.file-property .label{
+    font-weight: bold;
+}
+#filesfilterinput{
+    min-width:50%;
+}
+#edittextfileform_filename{
+    width:90%;
+}
+#edittextfileform_textareadiv{
+    width: 90%;
+    height: 50%;
+}
+#edittextfileform_filecontents{
+    width:100%;
+    height:100%;
+}
+#edittextfileform_fileinput{
+    
+}
+
+#edittextfilediv{
+    
+}
+
+#viewbinaryfilediv_downloadlinkdiv{
+    margin-top:10px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: bold;
+    line-height: 1.7em;
+}
+
+#files_addnewfilelinksdiv{
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+#fileslistdiv{
+    margin-top:6px;
+}
+#editbinaryfileform_buttonsdiv{
+    margin-top:5px;
 }

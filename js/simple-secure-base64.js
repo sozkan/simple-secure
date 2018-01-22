@@ -116,6 +116,11 @@ class SOC_base64 {
         return output.join('')
     }
 
+    /**
+     * 
+     * @param {Uint8Array} uint8
+     * @returns {String}
+     */
     encodeBytes(uint8) {
         var tmp;
         var len = uint8.length;

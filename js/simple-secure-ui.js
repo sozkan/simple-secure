@@ -33,25 +33,13 @@ function SOC_body_onload(){
     SOC_set_signon_state(socglobal_issignedon);
 }
 
-function SOC_updateprogress_TABLE_NOT_USED(msgtype, msg){
-    /*
-    let d = SOC_gebi('progressupdatediv');
-    let newdiv = document.createElement('div');
-    newdiv.setAttribute('class', msgtype);
-    newdiv.innerHTML = msg;
-    let newchild = d.insertBefore(newdiv, d.childNodes[0]);
-    */
-   let t = SOC_gebi('progressupdatediv_table');
-   let row = t.insertRow(-1);
-   row.setAttribute('class', msgtype);
-   let cell_1 = row.insertCell(0);
-   cell_1.innerHTML = new Date().toISOString();
-   let cell_2 = row.insertCell(1);
-   cell_2.innerHTML = msgtype;
-   let cell_3 = row.insertCell(2);
-   cell_3.innerHTML = msg;
-}
 
+/**
+ * appends a status update message
+ * @param {string} msgtype
+ * @param {string} msg
+ * @returns {void}
+ */
 function SOC_updateprogress(msgtype, msg){
    let textarea = SOC_gebi('progressupdatediv_textarea');
    textarea.value += new Date().toISOString()+'\t'+msgtype+'\t'+msg+'\n';
@@ -117,12 +105,121 @@ function SOC_switch_uistate(locationhash){
         SOC_gebi('inboxdiv').style.display='none';        
         SOC_gebi('reademaildiv').style.display='none';            
         SOC_gebi('loginbuttonsdiv').style.display='';            
-        SOC_gebi('progressupdatediv').style.display='none';                    
+        SOC_gebi('progressupdatediv').style.display='none';  
+        SOC_gebi('filesdiv').style.display='none';          
+        SOC_gebi('edittextfilediv').style.display='none';          
+        SOC_gebi('editbinaryfilediv').style.display='none';
+        SOC_gebi('viewbinaryfilediv').style.display='none';          
         SOC_log(4, 'SOC_switch_uistate', 'Signing out');
         SOC_sign_out();
         return;
     }
-    switch(locationhash){        
+    switch(locationhash){ 
+        case '#addtextfile':
+            if(!socglobal_myprivatekey){
+                SOC_alert('You MUST load your key first');
+                window.location.hash='#mykeys';
+                return;
+            }
+            SOC_files_edittextfileform_reset();
+            //SOC_gebi('edittextfileform_filecontents').style.height=window.innerHeight/2;
+            SOC_gebi('maincontainer').style.display='';
+            SOC_gebi('myexistingkeypairsdiv').style.display='none';
+            SOC_gebi('generatekeydiv').style.display='none';
+            SOC_gebi('importcontactkeydiv').style.display='none';
+            SOC_gebi('composediv').style.display='none';
+            SOC_gebi('inboxdiv').style.display='none'; 
+            SOC_gebi('reademaildiv').style.display='none';            
+            SOC_gebi('loginbuttonsdiv').style.display='none';
+            SOC_gebi('progressupdatediv').style.display='none'; 
+            SOC_gebi('filesdiv').style.display='none'; 
+            SOC_gebi('edittextfilediv').style.display=''; 
+            SOC_gebi('editbinaryfilediv').style.display='none';
+            break;
+        case '#addbinaryfile':
+            if(!socglobal_myprivatekey){
+                SOC_alert('You MUST load your key first');
+                window.location.hash='#mykeys';
+                return;
+            }
+            SOC_files_editbinaryfileform_reset();
+            //SOC_gebi('edittextfileform_filecontents').style.height=window.innerHeight/2;
+            SOC_gebi('maincontainer').style.display='';
+            SOC_gebi('myexistingkeypairsdiv').style.display='none';
+            SOC_gebi('generatekeydiv').style.display='none';
+            SOC_gebi('importcontactkeydiv').style.display='none';
+            SOC_gebi('composediv').style.display='none';
+            SOC_gebi('inboxdiv').style.display='none'; 
+            SOC_gebi('reademaildiv').style.display='none';            
+            SOC_gebi('loginbuttonsdiv').style.display='none';
+            SOC_gebi('progressupdatediv').style.display='none'; 
+            SOC_gebi('filesdiv').style.display='none'; 
+            SOC_gebi('edittextfilediv').style.display='none';
+            SOC_gebi('editbinaryfilediv').style.display='';
+        break;
+        case '#editbinaryfile':
+            if(!socglobal_myprivatekey){
+                SOC_alert('You MUST load your key first');
+                window.location.hash='#mykeys';
+                return;
+            }
+            //SOC_gebi('edittextfileform_filecontents').style.height=window.innerHeight/2;
+            SOC_gebi('maincontainer').style.display='';
+            SOC_gebi('myexistingkeypairsdiv').style.display='none';
+            SOC_gebi('generatekeydiv').style.display='none';
+            SOC_gebi('importcontactkeydiv').style.display='none';
+            SOC_gebi('composediv').style.display='none';
+            SOC_gebi('inboxdiv').style.display='none'; 
+            SOC_gebi('reademaildiv').style.display='none';            
+            SOC_gebi('loginbuttonsdiv').style.display='none';
+            SOC_gebi('progressupdatediv').style.display='none'; 
+            SOC_gebi('filesdiv').style.display='none'; 
+            SOC_gebi('edittextfilediv').style.display='none'; 
+            SOC_gebi('editbinaryfilediv').style.display='';
+        break;
+        case '#edittextfile':
+            if(!socglobal_myprivatekey){
+                SOC_alert('You MUST load your key first');
+                window.location.hash='#mykeys';
+                return;
+            }
+            //SOC_gebi('edittextfileform_filecontents').style.height=window.innerHeight/2;
+            SOC_gebi('maincontainer').style.display='';
+            SOC_gebi('myexistingkeypairsdiv').style.display='none';
+            SOC_gebi('generatekeydiv').style.display='none';
+            SOC_gebi('importcontactkeydiv').style.display='none';
+            SOC_gebi('composediv').style.display='none';
+            SOC_gebi('inboxdiv').style.display='none'; 
+            SOC_gebi('reademaildiv').style.display='none';            
+            SOC_gebi('loginbuttonsdiv').style.display='none';
+            SOC_gebi('progressupdatediv').style.display='none'; 
+            SOC_gebi('filesdiv').style.display='none'; 
+            SOC_gebi('edittextfilediv').style.display=''; 
+            SOC_gebi('editbinaryfilediv').style.display='none';
+        break;
+        case '#files':
+            if(!socglobal_myprivatekey){
+                SOC_alert('You MUST load your key first');
+                window.location.hash='#mykeys';
+                return;
+            }
+            if(!socglobal_fileslistloaded){     //files list is being loaded for the first time
+                SOC_files_filterform_submit();
+                socglobal_fileslistloaded = true;
+            }
+            SOC_gebi('maincontainer').style.display='';
+            SOC_gebi('myexistingkeypairsdiv').style.display='none';
+            SOC_gebi('generatekeydiv').style.display='none';
+            SOC_gebi('importcontactkeydiv').style.display='none';
+            SOC_gebi('composediv').style.display='none';
+            SOC_gebi('inboxdiv').style.display='none'; 
+            SOC_gebi('reademaildiv').style.display='none';            
+            SOC_gebi('loginbuttonsdiv').style.display='none';
+            SOC_gebi('progressupdatediv').style.display='none'; 
+            SOC_gebi('filesdiv').style.display='';  
+            SOC_gebi('edittextfilediv').style.display='none'; 
+            SOC_gebi('editbinaryfilediv').style.display='none';
+        break;
         case '#mykeys':    
             SOC_gebi('maincontainer').style.display='';
             SOC_gebi('myexistingkeypairsdiv').style.display='';
@@ -132,7 +229,10 @@ function SOC_switch_uistate(locationhash){
             SOC_gebi('inboxdiv').style.display='none';
             SOC_gebi('reademaildiv').style.display='none';            
             SOC_gebi('loginbuttonsdiv').style.display='none';
-            SOC_gebi('progressupdatediv').style.display='none';                                
+            SOC_gebi('progressupdatediv').style.display='none';  
+            SOC_gebi('filesdiv').style.display='none'; 
+            SOC_gebi('edittextfilediv').style.display='none'; 
+            SOC_gebi('editbinaryfilediv').style.display='none';
             SOC_myexistingkeypairsdiv_render();
             break;
         case '#logs':            
@@ -144,7 +244,10 @@ function SOC_switch_uistate(locationhash){
             SOC_gebi('inboxdiv').style.display='none';
             SOC_gebi('reademaildiv').style.display='none';            
             SOC_gebi('loginbuttonsdiv').style.display='none';
-            SOC_gebi('progressupdatediv').style.display='';                                
+            SOC_gebi('progressupdatediv').style.display='';     
+            SOC_gebi('filesdiv').style.display='none';    
+            SOC_gebi('edittextfilediv').style.display='none'; 
+            SOC_gebi('editbinaryfilediv').style.display='none';
             break;
         case '#generatekey':            
             SOC_gebi('maincontainer').style.display='';
@@ -155,7 +258,10 @@ function SOC_switch_uistate(locationhash){
             SOC_gebi('inboxdiv').style.display='none';
             SOC_gebi('reademaildiv').style.display='none';            
             SOC_gebi('loginbuttonsdiv').style.display='none';
-            SOC_gebi('progressupdatediv').style.display='none';                                
+            SOC_gebi('progressupdatediv').style.display='none'; 
+            SOC_gebi('filesdiv').style.display='none';     
+            SOC_gebi('edittextfilediv').style.display='none';
+            SOC_gebi('editbinaryfilediv').style.display='none';
             break;
         case '#importcontactkey':
             if(!socglobal_myprivatekey){
@@ -172,7 +278,10 @@ function SOC_switch_uistate(locationhash){
             SOC_gebi('inboxdiv').style.display='none';
             SOC_gebi('reademaildiv').style.display='none';            
             SOC_gebi('loginbuttonsdiv').style.display='none';
-            SOC_gebi('progressupdatediv').style.display='none';                                
+            SOC_gebi('progressupdatediv').style.display='none'; 
+            SOC_gebi('filesdiv').style.display='none';  
+            SOC_gebi('edittextfilediv').style.display='none';   
+            SOC_gebi('editbinaryfilediv').style.display='none';
             break;
         case '#compose':
             if(!socglobal_myprivatekey){
@@ -188,7 +297,10 @@ function SOC_switch_uistate(locationhash){
             SOC_gebi('inboxdiv').style.display='none'; 
             SOC_gebi('reademaildiv').style.display='none';            
             SOC_gebi('loginbuttonsdiv').style.display='none';
-            SOC_gebi('progressupdatediv').style.display='none';                                
+            SOC_gebi('progressupdatediv').style.display='none'; 
+            SOC_gebi('filesdiv').style.display='none';  
+            SOC_gebi('edittextfilediv').style.display='none';
+            SOC_gebi('editbinaryfilediv').style.display='none';
             break;
         case '#inbox':
             if(!socglobal_myprivatekey){
@@ -208,7 +320,10 @@ function SOC_switch_uistate(locationhash){
             SOC_gebi('inboxdiv').style.display='';   
             SOC_gebi('reademaildiv').style.display='none';            
             SOC_gebi('loginbuttonsdiv').style.display='none';
-            SOC_gebi('progressupdatediv').style.display='none';                                
+            SOC_gebi('progressupdatediv').style.display='none'; 
+            SOC_gebi('filesdiv').style.display='none';   
+            SOC_gebi('edittextfilediv').style.display='none';
+            SOC_gebi('editbinaryfilediv').style.display='none';
             break;
         case '#reademail':
             if(!socglobal_myprivatekey){
@@ -224,7 +339,10 @@ function SOC_switch_uistate(locationhash){
             SOC_gebi('inboxdiv').style.display='none';   
             SOC_gebi('reademaildiv').style.display='';            
             SOC_gebi('loginbuttonsdiv').style.display='none';
-            SOC_gebi('progressupdatediv').style.display='none';                                
+            SOC_gebi('progressupdatediv').style.display='none'; 
+            SOC_gebi('filesdiv').style.display='none';  
+            SOC_gebi('edittextfilediv').style.display='none';
+            SOC_gebi('editbinaryfilediv').style.display='none';
             break;
         case '#logout':
         default:
@@ -236,7 +354,10 @@ function SOC_switch_uistate(locationhash){
             SOC_gebi('inboxdiv').style.display='none'; 
             SOC_gebi('reademaildiv').style.display='none';            
             SOC_gebi('loginbuttonsdiv').style.display='';            
-            SOC_gebi('progressupdatediv').style.display='none';  
+            SOC_gebi('progressupdatediv').style.display='none'; 
+            SOC_gebi('filesdiv').style.display='none';   
+            SOC_gebi('edittextfilediv').style.display='none';
+            SOC_gebi('editbinaryfilediv').style.display='none';
             break;
     }
 }
@@ -298,6 +419,7 @@ function SOC_sign_out(){
     delete window.socglobal_myprivatekey;
     delete window.socglobal_myprivatekey_forsigning;
     delete window.socglobal_mypublickey_forverifying;
+    delete window.socglobal_mypublickey_forencryption;
     delete window.socglobal_stateobject;
     delete window.socglobal_mycontactslist;
     delete window.socglobal_composestate;
@@ -305,14 +427,24 @@ function SOC_sign_out(){
     delete window.socglobal_datapackage;
     delete window.socglobal_datapackage_data;
     delete window.socglobal_datapackage_state;
+    SOC_reademail_cleanup_state();
+    
+    delete window.socglobal_reademail_state;
+    delete window.socglobal_fileedit_state;
+    SOC_files_cleanup_state();
+    delete window.socglobal_files_state;
+    
+    
+    ///reloading the page to force deletion of data
+    window.location.reload();
+}
+
+function SOC_reademail_cleanup_state(){
     if(socglobal_reademail_state && socglobal_reademail_state.tmp_blob_urls){
         for(let tmpbloburltodelete of socglobal_reademail_state.tmp_blob_urls){
             window.URL.revokeObjectURL(tmpbloburltodelete);
         }
-    }
-    delete window.socglobal_reademail_state;
-    ///reloading the page to force deletion of data
-    window.location.reload();
+    }    
 }
 
 function SOC_set_signon_state(issignedon){
@@ -329,7 +461,7 @@ function SOC_set_signon_state(issignedon){
 }
 
 
-function progressupdatediv_textarea_copy(){
+function SOC_progressupdatediv_textarea_copy(){
     SOC_gebi('progressupdatediv_textarea').select();
     document.execCommand('copy');
 }

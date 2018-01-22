@@ -6,11 +6,7 @@
 function SOC_reademail(mailid){   
     window.location.hash='#reademail';
     //resetting state to make sure that the signature verification event queue can wait for the attachment download
-    if(socglobal_reademail_state && socglobal_reademail_state.tmp_blob_urls){
-        for(let tmpbloburltodelete of socglobal_reademail_state.tmp_blob_urls){
-            window.URL.revokeObjectURL(tmpbloburltodelete);
-        }
-    }
+    SOC_reademail_cleanup_state();
     socglobal_reademail_state={
         mailid_at_provider:mailid,  //we will use this one to mark email as read
         tmp_blob_urls:new Array()

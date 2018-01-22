@@ -12,6 +12,7 @@ const SOC_CONTACT_KEY_MIME_TYPE = 'application/vnd.sozkan.simple-secure.contact.
 const SOC_SIMPLE_SECURE_MSG_MIME = 'application/vnd.sozkan.simple-secure.message';
 const SOC_SIMPLE_SECURE_SIGNATURE_MIME = 'application/vnd.sozkan.simple-secure.signature';
 
+const SOC_SIMPLE_SECURE_ENCRYPTED_FILE = 'application/vnd.sozkan.simple-secure.encryptedfile';
 
 const SOC_GOOGLE_DISCOVERY_DOCS = [
                                 "https://www.googleapis.com/discovery/v1/apis/drive/v3/rest",
@@ -46,6 +47,8 @@ var socglobal_myprivatekey = null;
 var socglobal_myprivatekey_forsigning = null;
 //we will use this one to verify signatures which were created by socglobal_myprivatekey_forsigning
 var socglobal_mypublickey_forverifying = null;
+//we will use this one to encrypt files
+var socglobal_mypublickey_forencryption = null;
 //used to maintain state between async callbacks
 var socglobal_stateobject = {};
 //my contacts, cached in this var
@@ -66,4 +69,9 @@ var socglobal_datapackage={};
 var socglobal_datapackage_data={};
 var socglobal_datapackage_state={};
 
+var socglobal_fileedit_state = {};
+//state for files tab
+var socglobal_files_state = {};
+//only used for loading files the first time that page is rendered if files were not loaded before
+var socglobal_fileslistloaded = false;
 ///END GLOBAL VARIABLES

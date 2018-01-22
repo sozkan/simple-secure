@@ -517,6 +517,104 @@ class SOC_GoogleClient extends SOC_Base{
         );
 
     }
+     
+    /**
+     * search for files in google drive
+     * TODO returns max 20 results and does not support paging, yet
+     * TODO add support for other parameters (e.g includeTeamDriveItems) documented at https://developers.google.com/drive/v3/reference/files/list
+     * TODO add proper sorting support
+     * @param {function} finished_callback
+     * @param {function} error_callback
+     * @returns {void}
+     */
+    searchFilesInDrive(filterquery_str, finished_callback, error_callback){
+        SOC_log(5, 'SOC_GoogleClient.searchFilesInDrive', 'Enter'); 
+        let qparam = "mimeType = '"+SOC_SIMPLE_SECURE_ENCRYPTED_FILE+"'";
+        if(filterquery_str){
+            qparam +=" and " + filterquery_str;
+        }
+        gapi.client.drive.files.list({
+            'orderBy': 'name',
+            'pageSize':20,
+            
+            /*
+             * TODO retrive additional fields like 
+                "sharingUser": {"kind": "drive#user", "displayName": string, "photoLink": string, "me": boolean, "permissionId": string, "emailAddress": string},
+                "owners": [{"kind": "drive#user", "displayName": string, "photoLink": string, "me": boolean, "permissionId": string, "emailAddress": string}  ],
+                "teamDriveId": string,
+             */
+            'fields': 'files(name,id, createdTime, modifiedTime, trashed, starred, properties(originalMimeType),webViewLink, webContentLink)',
+            'q': qparam
+        }).then(
+                function(response){
+                    finished_callback(response); 
+                },
+                function(response){
+                    error_callback(response); 
+                }
+
+        );
+        SOC_log(5, 'SOC_GoogleClient.searchFilesInDrive', 'Exit');         
+    }
+
+    /**
+     * save (create or update) a file in google drive
+     * @param {string} file_id
+     * @param {string} filecontents_str
+     * @param {string} filename
+     * @param {string} original_mimetype
+     * @param {function} finished_callback
+     * @param {function} error_callbak
+     * @returns {void}
+     */
+    saveFile(file_id, filecontents_str, filename, original_mimetype, finished_callback, error_callbak){
+        SOC_log(5, 'SOC_GoogleClient.saveFile', 'Enter'); 
+        const boundary = '-------'+SOC_hexEncode(SOC_getRandomBytes(20));
+        const delimiter = "\r\n--" + boundary + "\r\n";
+        const close_delim = "\r\n--" + boundary + "--";
+        
+
+        let metadata = {
+            //we don't create folders since we don't care about file names etc. we only care about mime types
+            //users can move files around if they want to
+            'name': filename,
+            'properties': {'originalMimeType':original_mimetype},
+            'mimeType': SOC_SIMPLE_SECURE_ENCRYPTED_FILE + '\r\n\r\n'
+        };
+
+        var multipartRequestBody = delimiter +  'Content-Type: application/json; charset=UTF-8\r\n\r\n' + JSON.stringify(metadata) + delimiter +
+                'Content-Type: ' + SOC_SIMPLE_SECURE_ENCRYPTED_FILE+ '\r\n\r\n' + filecontents_str + close_delim;
+
+        let method = 'POST';
+        if(file_id){    //updating an existing file
+            method = 'PATCH';
+        }
+        let apipath = '/upload/drive/v3/files';
+        if(file_id){    //updating an existing file
+            apipath = apipath+'/'+file_id;
+        }
+
+        gapi.client.request({
+            'path': apipath,
+            'method': method,
+            'params': {
+                'uploadType': 'multipart'
+            },
+            'headers': {
+                'Content-Type': 'multipart/related; boundary="' + boundary + '"'
+            },
+            'body': multipartRequestBody
+        }).then(
+                function(response){
+                   finished_callback(response); 
+                },
+                function(response){
+                    error_callbak(response);
+                }
+           );            
+        
+        SOC_log(5, 'SOC_GoogleClient.saveFile', 'Exit');                 
+    }
 }
 
 

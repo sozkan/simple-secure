@@ -20,6 +20,7 @@
         <script src="js/simple-secure-mykeys.js"></script>
         <script src="js/simple-secure-generatekey.js"></script>        
         <script src="js/simple-secure-reademail.js"></script>
+        <script src="js/simple-secure-files.js"></script>
 
         <script src="js/simple-secure-globals.js"></script>
         
@@ -109,6 +110,7 @@
                     <div id="currentloadedkeyinfodiv" style="clear:both"></div>
                 </div>
                 <div id="navigation_links" style="clear:both">
+                    <a href="#files">Files</a>  
                     <a href="#inbox">Inbox</a>  
                     <a href="#compose">Compose</a>
                     <a href="#importcontactkey">Contacts</a>
@@ -215,6 +217,7 @@
                                 <div class="email-secure-part" id="composeemailform_added_recipientsdiv">No recipients added</div>                                 
                             </div>
                         </div>
+                        <br>
                         <div class="form-row">
                             <label>Other Recipients (cc)</label>
                             <div class="form-row-value email-insecure-part">
@@ -314,8 +317,95 @@
                     </div>
                 </div>
                 <div id="reademaildiv" class="ui-card-div"></div>
+                
+                <div id="filesdiv" class="ui-card-div">                    
+                    <h1>Files</h1>
+                    <div id="files_addnewfilelinksdiv">                         
+                        <a href="#addtextfile">Add new text file</a>
+                        <a href="#addbinaryfile">Upload a new file</a>
+                    </div>
+                    <div id="filesfilterdiv">
+                        <form method="post" autocomplete="off" name="filesfilterform" id="filesfilterform" onsubmit="try{SOC_files_filterform_submit();} catch(ex){SOC_log(1,'filesfilterform onsubmit',ex);} return false;">
+                            <label>
+                            Filter:
+                            </label>
+                            <input type="text" name="filesfilterinput" id="filesfilterinput" value="trashed=false">
+                            <input type="submit" value="Refresh">                        
+
+                            <div id="filesfilterform_shortcutsdiv" class="input-sidenote">
+                                To search in file names use <b>name=&quot;string&quot;</b> or 
+                                <b>name contains &quot;string&quot;</b>, 
+                                to search for starred use <b>starred=true</b>.
+                                Add <b>and</b> or <b>or</b> between terms. For example : 
+                                <em>trashed=false and starred=true and name contains &quot;secret&quot;</em>.
+                                See <a href="https://developers.google.com/drive/v3/web/search-parameters" target="_blank">https://developers.google.com/drive/v3/web/search-parameters</a>
+                                for the exact syntax. (This will be improved in a future release)
+                                Max 20 results will be shown.
+                            </div>
+                        </form>
+                    </div>
+                    <div id="fileslistdiv">
+
+                    </div>
+                    
+                </div>
+                <div id="editbinaryfilediv" class="ui-card-div">
+                    <form method="post" autocomplete="off" name="editbinaryfileform" id="editbinaryfileform" onsubmit="try{SOC_files_editbinaryfile_submit();} catch(ex){SOC_log(1,'editbinaryfileform onsubmit',ex);} return false;">
+                        <input type="hidden" name="fileid" id="editbinaryfileform_fileid" value="">
+    
+                        <div class="form-row" id="viewbinaryfilediv_downloadlinkdiv"> 
+                            A DOWNLOAD LINK WILL BE DISPLAYED HERE ONCE THE FILE IS DECRYPTED...
+                        </div>
+                        <div id="viewbinaryfilediv_signaturestatusdiv"></div>
+                        
+                        <div class="form-row" id="editbinaryfileform_fileinputdiv">
+                            <label>
+                                Select a file to encrypt and upload : 
+                            </label>
+                            <div class="form-row-value email-secure-part">
+                                <input type="file" name="selectedfile" id="editbinaryfileform_fileinput">
+                                <span class="input-sidenote">
+                                    When updating an existing file, uploading a new file will replace the current
+                                    file but the same file name as the current file will be used 
+                                    even if the name of the selected new file is different. 
+                                </span>
+                            </div>
+                        </div>   
+    
+                        <div class="form-buttons" id="editbinaryfileform_buttonsdiv">
+                            <input type="reset" value="Reset">
+                            <input type="submit" value="Save">
+                        </div>
+                    </form>
+                </div>
+                <div id="edittextfilediv" class="ui-card-div">
+                    <form method="post" autocomplete="off" name="edittextfileform" id="edittextfileform" onsubmit="try{SOC_files_edittextfile_submit();} catch(ex){SOC_log(1,'edittextfileform onsubmit',ex);} return false;">
+                        <input type="hidden" name="fileid" id="edittextfileform_fileid" value="">
+                        <div class="form-row">
+                            <label>
+                                File Name
+                            </label>
+                            <div class="form-row-value email-insecure-part">
+                                <input type="text" name="filename" id="edittextfileform_filename">
+                            </div>
+                        </div>
+                        <div class="form-row" id="edittextfileform_textareadiv">
+                            <label>
+                                Text
+                            </label>
+                            <div id="edittextfileform_signaturestatusdiv"></div>
+                            <div class="form-row-value email-secure-part">
+                                <textarea name="filecontents" id="edittextfileform_filecontents" rows="20" wrap="soft"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-buttons" id="edittextfileform_buttonsdiv">
+                            <input type="reset" value="Reset">
+                            <input type="submit" value="Save">
+                        </div>
+                    </form>
+                </div>
                 <div id="progressupdatediv" class="ui-card-div">
-                    <h1>Logs <button onclick="progressupdatediv_textarea_copy()" style="float:right;">Copy All Logs</button></h1>
+                    <h1>Logs <button onclick="SOC_progressupdatediv_textarea_copy()" style="float:right;">Copy All Logs</button></h1>
                     
                     <textarea id="progressupdatediv_textarea"></textarea>
                     <!--
