@@ -735,8 +735,13 @@ function SOC_files_editbinaryfileform_reset(){
     signaturediv_binary.removeAttribute('class');
 }
 
-
+/**
+ * called in multiple error cases, not the best error handling
+ * @param {object} error
+ * @returns {void}
+ */
 function SOC_files_edit_submit_error_cb(error){
-    SOC_alert('FIX ME: SOC_files_edit_submit_error_cb Error:' + SOC_escapehtml(JSON.stringify(error)));
+    SOC_updateprogress('error', 'Error :'+  + SOC_escapehtml(JSON.stringify(error)));
+    SOC_alert('An unexpected error occured. Please see logs for details');
 }
 
