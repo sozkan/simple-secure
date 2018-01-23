@@ -21,7 +21,7 @@ End-to-end encryption for Gmail and Google Drive(for now)
 - Your keys and files will be available on all devices seamlessly (as long as you can access Google Drive)
 - All files will be encrypted/decrypted in your browser. Even Google will not have access to their contents
 
-## Live demo : 
+## Live demo and additional documentation and screenshots : 
 https://simple-secure.com
 
 For maximum security download and deploy the application on your own https server. Deploying your own instance is quite easy. See documentation.html for more information.
