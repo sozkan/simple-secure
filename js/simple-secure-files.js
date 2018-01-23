@@ -13,8 +13,8 @@ function SOC_files_cleanup_state(){
             window.URL.revokeObjectURL(tmpbloburltodelete);
         }
     }
-    SOC_gebi('viewbinaryfilediv_signaturestatusdiv').innerHTML = '';
-    SOC_gebi('edittextfileform_signaturestatusdiv').innerHTML = '';
+    SOC_files_editbinaryfileform_reset();
+    SOC_files_edittextfileform_reset();
 }
 
 /**
