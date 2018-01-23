@@ -708,13 +708,31 @@ function SOC_files_edittextfileform_reset(){
     SOC_gebi('edittextfileform_filename').value ='';
     SOC_gebi('edittextfileform_filecontents').value ='';
     SOC_gebi('edittextfileform_fileid').value ='';
-        
+   
+    
+    let signaturediv_text = SOC_gebi('edittextfileform_signaturestatusdiv');
+    let signaturediv_binary = SOC_gebi('viewbinaryfilediv_signaturestatusdiv');
+
+    signaturediv_text.innerHTML = '';
+    signaturediv_text.removeAttribute('class');
+
+    signaturediv_binary.innerHTML = '';
+    signaturediv_binary.removeAttribute('class');
+
 }
 
 function SOC_files_editbinaryfileform_reset(){
     SOC_gebi('editbinaryfileform_fileinput').value ='';
     SOC_gebi('viewbinaryfilediv_downloadlinkdiv').innerHTML ='';
     SOC_gebi('editbinaryfileform_fileid').value ='';            
+    let signaturediv_text = SOC_gebi('edittextfileform_signaturestatusdiv');
+    let signaturediv_binary = SOC_gebi('viewbinaryfilediv_signaturestatusdiv');
+
+    signaturediv_text.innerHTML = '';
+    signaturediv_text.removeAttribute('class');
+
+    signaturediv_binary.innerHTML = '';
+    signaturediv_binary.removeAttribute('class');
 }
 
 
