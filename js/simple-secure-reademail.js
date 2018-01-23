@@ -234,10 +234,6 @@ function SOC_readmail_data_decrypted_cb(data_cleartext_buffer){
         let attachmentcounter = 0;
         for(let tmpattachmentname in securemsg_json_obj.attachments){
             let tmpliforattachmentfile = document.createElement('li');
-            /*
-            tmpliforattachmentfile.innerHTML='<button onclick="SOC_readmail_open_attachment(this)" attachment-data="'+SOC_escapehtml(securemsg_json_obj.attachments[tmpattachmentname])+'">'+
-                    SOC_escapehtml(tmpattachmentname)+'</button>';
-            */
             let htmlescapedattachmentname = SOC_escapehtml(tmpattachmentname);
             let tmpfirstcolonpos =  securemsg_json_obj.attachments[tmpattachmentname].indexOf(':');
             let tmpfirstsemicolonpos =  securemsg_json_obj.attachments[tmpattachmentname].indexOf(';');
@@ -266,22 +262,6 @@ function SOC_readmail_data_decrypted_cb(data_cleartext_buffer){
     }
 }
 
-/**
- * called when an attachment is clicked
- * @returns void
- */
-function SOC_readmail_open_attachment(this_fortheclickedelement){
-    let attdata = this_fortheclickedelement.getAttribute('attachment-data');
-    var html = '<html>' +
-        '<style>html, body { padding: 0; margin: 0; } iframe { width: 100%; height: 100%; border: 0;}  </style>' +
-        '<body>' +
-        '<p></p>' +
-        '<iframe type="application/pdf" src="' + attdata + '"></iframe>' +
-        '</body></html>';
-        var a = window.open("about:blank", "_blank");
-        a.document.write(html);
-        a.document.close();
-}
 
 /**
  * called when an error occurs during decryption of the secure data
