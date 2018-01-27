@@ -10,7 +10,8 @@
  * @returns {void}
  */
 function SOC_composeemailform_recipient_clicked(clickedbutton, emailaddr){
-    //implementing an async event queue just for this, insane?
+    //async event queue. we queue "add recipient" events to prevent confusion when 
+    //the user clicks multiple recipient names 
     if(socglobal_composestate.currently_adding_contact){
         let intervalid_foremail = window.setInterval(function(clickedbutton, emailaddr){
             SOC_composeemailform_recipient_clicked(clickedbutton, emailaddr);
@@ -56,7 +57,8 @@ function SOC_composeemailform_addrecipient_error_cb(error){
 }
 
 /**
- * 
+ * called after the contact file is downloaded from google
+ * begins signature validation on the contact file
  * @param {string} fileId for the contact
  * @param {object} contact_keyfile JSON obj from google api
  * @returns {void}
@@ -142,7 +144,6 @@ function SOC_composeemailform_remove_recipient(emailaddr){
     }
 }
 /**
- * NOT USED 
  * renders the list current of recipients 
  * @returns {void}
  */
@@ -157,7 +158,7 @@ function SOC_composeemailform_renderrecipients(){
         }
         let tmpescapedemail = SOC_escapehtml(tmpemail);
         generatedhtml +='<div>'+tmpescapedemail+'<button onclick="SOC_composeemailform_remove_recipient(\''+tmpescapedemail
-                                                    +'\')">Delete</button></div>';
+                                                    +'\')">Remove</button></div>';
     }    
     targetdiv.innerHTML = generatedhtml;
 }

@@ -144,11 +144,11 @@ h1{
 
 /* things that will be included in emails in clear text */
 .cleartextfield{
-    border:1px solid red;
+    border:1px solid #f2c6c6;
 }
 /* things that will NOT be included in emails in clear text */
 .encryptedfield{
-    border:1px solid greenyellow;
+    border:1px solid #04d130;
 }
 .email-insecure-part{
     color:#910f1c;
@@ -340,6 +340,8 @@ input [type=submit]{
     text-align: center;
     border-top:1px solid #ddd;
     padding:5px 5px 5px 5px;
+    margin:5px 5px 5px 5px;
+    border-top:2px solid #888;
 }
 
 .form-buttons input{
@@ -388,17 +390,63 @@ input [type=submit]{
 }
 #composeemailform label{
     margin-top:5px;
+    font-weight: bold;
+    color:#445;
 }
 
 #composeemailform_recipientsdiv{
     max-height: 200px;
     overflow: auto;
+    margin-top:2px;
+    margin-bottom: 5px;
+    padding-top:3px;
+    padding-bottom:3px;
+    border-top:1px solid #f4f4f4;
+    width:100%;
 }
-#composeemailform_recipientsdiv div, #composeemailform_added_recipientsdiv div{
+#composeemailform_recipientsdiv div{
     float:left;
 }
+#composeemailform_added_recipientsdiv div{
+    float:left;
+    border:1px solid #fff;
+}
+#composeemailform_added_recipientsdiv div:hover{
+    background-color: #f4f4f4;
+    border:1px solid #ddd;
+}
+#composeemailform_added_recipientsdiv{
+    margin-top:2px;
+    margin-bottom: 5px;
+    padding-top:3px;
+    padding-bottom:3px;
+    border-top:1px solid #f4f4f4;
+    width:100%;    
+}
+#composeemailform_added_recipientsdiv button{
+    border:1px solid #ccc; 
+    padding:1px 1px 1px 1px;
+    font-size: smaller;    
+    vertical-align: top;
+}
+#composeemailform_added_recipientsdiv button:hover{
+    color:red;
+}
+#composeemailform_recipientsdiv_table button{
+    border:1px solid #ccc; 
+    padding:1px 1px 1px 1px;
+}
+#composeemailform_recipientsdiv_table button:enabled:hover{
+    color:blue;
+}
+
 #composeemailform .form-row{
     margin-top:5px;
+}
+#composeemail_attachmentsdiv{
+    margin-top:5px;
+    padding-top:5px;
+    margin-bottom:5px;
 }
 #currentloadedkeyinfodiv{
     font-size: smaller;
@@ -572,10 +620,11 @@ input[type="radio"] {
     min-width:50%;
 }
 #edittextfileform_filename{
-    width:90%;
+    width:98%;
+    margin-bottom:5px;
 }
 #edittextfileform_textareadiv{
-    width: 90%;
+    width: 98%;
     height: 50%;
 }
 #edittextfileform_filecontents{
@@ -588,6 +637,10 @@ input[type="radio"] {
 
 #edittextfilediv{
     
+}
+#edittextfilediv label, #editbinaryfilediv label{
+    font-weight: bold;
+    color:#445;
 }
 
 #viewbinaryfilediv_downloadlinkdiv{

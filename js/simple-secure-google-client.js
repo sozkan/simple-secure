@@ -364,7 +364,7 @@ class SOC_GoogleClient extends SOC_Base{
     listContacts(finished_callback, error_callback){
         SOC_log(5, 'SOC_GoogleClient.listContacts', 'Enter'); 
         gapi.client.drive.files.list({
-            //'orderBy': 'files(email)',
+            'orderBy': 'name',
             'fields': 'files(name,id, properties(email),webViewLink)',
             'q': "mimeType = '"+SOC_CONTACT_KEY_MIME_TYPE+"' and trashed = false "
         }).then(

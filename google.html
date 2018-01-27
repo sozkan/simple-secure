@@ -212,9 +212,9 @@
                         </div>
 
                         <div class="form-row">                            
-                            <label class="email-secure-part">Recipients</label>
+                            <label>Recipients</label>
                             <div class="form-row-value">                            
-                                <div class="email-secure-part" id="composeemailform_added_recipientsdiv">No recipients added</div>                                 
+                                <div id="composeemailform_added_recipientsdiv">No recipients added</div>                                 
                             </div>
                         </div>
                         <br>
@@ -257,11 +257,6 @@
                         <div class="form-row">
                             <label>Attachments </label>
                             <div class="form-row-value email-secure-part">
-                                <div class="input-sidenote">
-                                    Attachments will also be encrypted, they may contain sensitive data.
-                                    WARNING! Adding large attachments will cause your browser to freeze or become completely unresponsive.
-                                    Try to keep total email size small, i.e a few MBs. This is not an application for transferring large files.
-                                </div>
                                 <div id="composeemail_attachmentsdiv" class="form-row-value email-secure-part">
                                     <div style="float:left">
                                     <input type="file" name="addnewcontactkeyfileinput1" id="addnewcontactkeyfileinput1">
@@ -274,6 +269,11 @@
                                     <input type="file" name="addnewcontactkeyfileinput6" id="addnewcontactkeyfileinput6">
                                     </div>
                                     <div style="clear:both"> </div>
+                                </div>
+                                <div class="input-sidenote">
+                                    Attachments will also be encrypted, they may contain sensitive data.
+                                    WARNING! Adding large attachments will cause your browser to freeze or become completely unresponsive.
+                                    Try to keep total email size small, i.e a few MBs. This is not an application for transferring large files.
                                 </div>
                             </div>
                         </div>
@@ -350,6 +350,7 @@
                     
                 </div>
                 <div id="editbinaryfilediv" class="ui-card-div">
+                    <h1>Binary File</h1>
                     <form method="post" autocomplete="off" name="editbinaryfileform" id="editbinaryfileform" onsubmit="try{SOC_files_editbinaryfile_submit();} catch(ex){SOC_log(1,'editbinaryfileform onsubmit',ex);} return false;">
                         <input type="hidden" name="fileid" id="editbinaryfileform_fileid" value="">
     
@@ -379,6 +380,7 @@
                     </form>
                 </div>
                 <div id="edittextfilediv" class="ui-card-div">
+                    <h1>Text File</h1>
                     <form method="post" autocomplete="off" name="edittextfileform" id="edittextfileform" onsubmit="try{SOC_files_edittextfile_submit();} catch(ex){SOC_log(1,'edittextfileform onsubmit',ex);} return false;">
                         <input type="hidden" name="fileid" id="edittextfileform_fileid" value="">
                         <div class="form-row">
