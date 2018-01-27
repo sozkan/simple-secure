@@ -206,7 +206,7 @@ function SOC_composeemailform_submit(){
         SOC_alert('You didn\'t add any recipients. At least one recipient must be selected to send or save as draft.');
         return;
     }
-    
+    SOC_begin_longoperation();
     SOC_updateprogress('info','Compose form submitted. Starting to prepare the email package.');
 
     let encryptedMessage = document.forms['composeemailform'].encryptedMessage.value;

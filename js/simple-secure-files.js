@@ -485,7 +485,7 @@ function SOC_files_editbinaryfile_submit(){
         SOC_alert('Please select a file');
         return;
     }
-    
+    SOC_begin_longoperation();
     let selected_file = fileinput.files[0]; 
     
     socglobal_fileedit_state.filename = selected_file.name;
@@ -538,6 +538,7 @@ function SOC_files_edittextfile_submit(){
         SOC_alert('Filename cannot be empty');
         return;
     }
+    SOC_begin_longoperation();
     socglobal_fileedit_state = {}; 
     socglobal_fileedit_state.filename = filename;
     socglobal_fileedit_state.mimetype = 'text/plain';

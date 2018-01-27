@@ -43,6 +43,13 @@ function SOC_body_onload(){
 function SOC_updateprogress(msgtype, msg){
    let textarea = SOC_gebi('progressupdatediv_textarea');
    textarea.value += new Date().toISOString()+'\t'+msgtype+'\t'+msg+'\n';
+    if(socglobal_longoperation_in_progress){
+        let msgdiv = SOC_gebi('fullscreenalertdiv_msgbox_msg');
+        let newdiv = document.createElement('div');
+        newdiv.innerHTML = msg;
+        newdiv.setAttribute('class', msgtype);
+        msgdiv.appendChild(newdiv);
+    }
 }
 
 /**
@@ -378,6 +385,7 @@ function SOC_set_currentuseremail(userprofileresponse){
  * @returns {void}
  */
 function SOC_alert(msg){
+    SOC_end_longoperation();    //an alert will signal the end of a long operation
     let msgdiv = SOC_gebi('fullscreenalertdiv_msgbox_msg');
     msgdiv.innerHTML = msg;
     
@@ -464,4 +472,28 @@ function SOC_set_signon_state(issignedon){
 function SOC_progressupdatediv_textarea_copy(){
     SOC_gebi('progressupdatediv_textarea').select();
     document.execCommand('copy');
+}
+
+/**
+ * called when beginning a long operation 
+ * e.g you click a button and a lot of things happen in sequence
+ * shows the fullscreen progress update window
+ */
+function SOC_begin_longoperation(){
+    socglobal_longoperation_in_progress = true;
+    let msgdiv = SOC_gebi('fullscreenalertdiv_msgbox_msg');
+    msgdiv.innerHTML = '';
+    
+    let alertdiv = SOC_gebi('fullscreenalertdiv');
+    alertdiv.style.display='';
+
+}
+
+/**
+ * called when a long operation ends
+ * hides the fullscreen progress update window
+ */
+function SOC_end_longoperation(){
+    socglobal_longoperation_in_progress = false;
+    SOC_alert_close();
 }

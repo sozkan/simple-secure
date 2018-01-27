@@ -74,4 +74,6 @@ var socglobal_fileedit_state = {};
 var socglobal_files_state = {};
 //only used for loading files the first time that page is rendered if files were not loaded before
 var socglobal_fileslistloaded = false;
+
+var socglobal_longoperation_in_progress = false;
 ///END GLOBAL VARIABLES
