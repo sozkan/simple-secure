@@ -1,5 +1,5 @@
 /* 
- * application configration. normally you should not need to change anything else.
+ * application configuration. normally you should not need to change anything else.
  */
 
 //Google API configuration
