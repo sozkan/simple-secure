@@ -222,7 +222,8 @@
                             <label>Other Recipients (cc)</label>
                             <div class="form-row-value email-insecure-part">
                                 <input type="text" name="otherrecipients" id="composeemail_otherrecipients_input" autocomplete="off" >
-                                <div class="input-sidenote">
+                                <span class="help-openclose" onclick="SOC_showhide_help('compose_otherrecipients_help')">Help</span>
+                                <div class="input-sidenote helpbox" style="display:none" id="compose_otherrecipients_help">
                                     Add recipients without keys here, <u>separated by space characters</u>. 
                                     They won't be able to read secure contents or verify signatures.
                                     They will be able to read insecure parts (subject and the insecure message field)
@@ -239,7 +240,8 @@
                             <label>Insecure Message</label>
                             <div class="form-row-value email-insecure-part">
                                 <textarea name="clearTextMessage" id="composeemail_cleartextmsg_txt" class="cleartextfield"></textarea>                      
-                                <div class="input-sidenote">
+                                <span class="help-openclose" onclick="SOC_showhide_help('compose_insecuremsg_help')">Help</span>
+                                <div class="input-sidenote helpbox" style="display:none" id="compose_insecuremsg_help">
                                 &quot;Insecure Message&quot; part will not be encrypted, will be readable without keys.
                                 (Things like, see attached secure message etc)
                                 </div>
@@ -250,7 +252,7 @@
                             <div class="form-row-value email-secure-part">
                                 <textarea name="encryptedMessage" id="composeemail_securemsg_txt" class="encryptedfield"></textarea>                        
                                 <div class="input-sidenote">
-                                    &quot;Secure Message&quot; part will be encrypted. May contain sensitive data.
+                                    &quot;Secure Message&quot; and &quot;Attachments&quot; will be encrypted. They may sensitive data.
                                 </div>
                             </div>
                         </div>
@@ -270,7 +272,8 @@
                                     </div>
                                     <div style="clear:both"> </div>
                                 </div>
-                                <div class="input-sidenote">
+                                <span class="help-openclose" onclick="SOC_showhide_help('compose_attachments_help')">Help</span>
+                                <div class="input-sidenote helpbox" style="display:none" id="compose_attachments_help">
                                     Attachments will also be encrypted, they may contain sensitive data.
                                     WARNING! Adding large attachments will cause your browser to freeze or become completely unresponsive.
                                     Try to keep total email size small, i.e a few MBs. This is not an application for transferring large files.
@@ -331,8 +334,8 @@
                             </label>
                             <input type="text" name="filesfilterinput" id="filesfilterinput" value="trashed=false">
                             <input type="submit" value="Refresh">                        
-
-                            <div id="filesfilterform_shortcutsdiv" class="input-sidenote">
+                            <span class="help-openclose" onclick="SOC_showhide_help('filesfilterform_shortcutsdiv')">Help</span>
+                            <div id="filesfilterform_shortcutsdiv" style="display:none" class="input-sidenote helpbox">
                                 To search in file names use <b>name=&quot;string&quot;</b> or 
                                 <b>name contains &quot;string&quot;</b>, 
                                 to search for starred use <b>starred=true</b>.
@@ -365,11 +368,11 @@
                             </label>
                             <div class="form-row-value email-secure-part">
                                 <input type="file" name="selectedfile" id="editbinaryfileform_fileinput">
-                                <span class="input-sidenote">
+                                <div class="input-sidenote">
                                     When updating an existing file, uploading a new file will replace the current
                                     file but the same file name as the current file will be used 
                                     even if the name of the selected new file is different. 
-                                </span>
+                                </div>
                             </div>
                         </div>   
     

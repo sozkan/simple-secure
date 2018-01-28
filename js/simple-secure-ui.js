@@ -497,3 +497,13 @@ function SOC_end_longoperation(){
     socglobal_longoperation_in_progress = false;
     SOC_alert_close();
 }
+
+function SOC_showhide_help(helpdivid){
+    let helpdiv = SOC_gebi(helpdivid);
+    if(helpdiv.style.display=='none'){
+        helpdiv.style.display='';
+    }
+    else{
+        helpdiv.style.display='none';
+    }
+}

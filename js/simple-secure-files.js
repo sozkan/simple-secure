@@ -418,7 +418,7 @@ function SOC_files_loadfile_verify_signature_cb(isverified){
     }
 
     if(isverified){
-        SOC_updateprogress('info', 'The signature on the file is valid. Starting to decrypting the file');
+        SOC_updateprogress('info', 'The signature on the file is valid. Starting to decrypt the file');
         signaturestatusdiv.setAttribute('class', 'signature-valid');
         signaturestatusdiv.innerText = 'FILE SIGNATURE IS VALID. Signed by: ' + socglobal_files_state.file_data_result.signature.signer;
         SOC_files_loadfile_decrypt_file();

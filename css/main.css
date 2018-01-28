@@ -662,3 +662,21 @@ input[type="radio"] {
 #editbinaryfileform_buttonsdiv{
     margin-top:5px;
 }
+#currentloadedkeyinfo_details{
+    display: none;    
+}
+
+#currentloadedkeyinfo_namespan{
+    cursor:pointer;
+}
+
+.helpbox{
+
+}
+
+.help-openclose{
+    color:orangered;
+    font-size: smaller;
+    cursor:  help;
+    vertical-align: middle;
+}

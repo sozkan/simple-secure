@@ -254,11 +254,11 @@ function SOC_loadmyprivatekey_submit_8(publickeys_sha256hash_bytes){
     let publickeycheckinfo = SOC_sha256_to_manualcheckvalues(publickeys_sha256hash_bytes);
     
     let targetdiv = SOC_gebi('currentloadedkeyinfodiv');
-    let htmlstr =   ' <span>Current Key:<b>'+SOC_escapehtml(socglobal_stateobject.mycurrentloadedkey_name)+'</b></span>'+ 
-                    ' <span>Generated: '+SOC_escapehtml(socglobal_stateobject.mycurrentloadedkey_generated)+ '</span>'+
+    let htmlstr =   ' <span id="currentloadedkeyinfo_namespan" onclick="SOC_showhide_currentkey_details()">Current Key:<b>'+SOC_escapehtml(socglobal_stateobject.mycurrentloadedkey_name)+'</b> <sup>(click for details)</sup></span>'+ 
+                    ' <div id="currentloadedkeyinfo_details"><span>Generated: '+SOC_escapehtml(socglobal_stateobject.mycurrentloadedkey_generated)+ '</span>'+
                     ' <span>Checksum 1: ' + publickeycheckinfo.checksum +'</span> '+
                     ' <span>Checksum 2: '+publickeycheckinfo.foursum+'</span> '+
-                    ' <span class="sha256hash"><b>Hash:</b> <span>'+ publickeycheckinfo.hash.join('</span> <span>')+'</span></span>';
+                    ' <span class="sha256hash"><b>Hash:</b> <span>'+ publickeycheckinfo.hash.join('</span> <span>')+'</span></span></div>';
     targetdiv.innerHTML = htmlstr;
     
     //now base64 decode my encryption public key and import it. this key will be used to encrypt files
@@ -307,4 +307,17 @@ function SOC_loadmyprivatekey_submit_error_cb(error){
     socglobal_stateobject.myprivatekey_encrypted='';
     SOC_selectprivatekeyandloadform_reset();
     SOC_alert('Error loading my key. Please see logs for more details.');
+}
+
+/**
+ * shows or hides the current key details div
+ */
+function SOC_showhide_currentkey_details(){
+    let thediv = SOC_gebi('currentloadedkeyinfo_details');
+    if(thediv.style.display=='none'){
+        thediv.style.display='inline-block';
+    }
+    else{
+        thediv.style.display='none';
+    }
 }
