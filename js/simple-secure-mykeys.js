@@ -237,7 +237,7 @@ function SOC_loadmyprivatekey_submit_7(imported_public_key){
     SOC_updateprogress('info','Loaded my public key. Now calculating checksums for my public key.');
     socglobal_mypublickey_forverifying = imported_public_key;
     //////////
-    let strtohash = socglobal_stateobject.mypublickeys_json_obj.encryption + socglobal_stateobject.mypublickeys_json_obj.signing;
+    let strtohash = socglobal_currentuseremail + socglobal_stateobject.mypublickeys_json_obj.encryption + socglobal_stateobject.mypublickeys_json_obj.signing;
     SOC_sha256(strtohash, SOC_loadmyprivatekey_submit_8, SOC_loadmyprivatekey_submit_error_cb);
 }
 

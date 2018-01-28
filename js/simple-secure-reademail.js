@@ -305,7 +305,7 @@ function SOC_readmail_signature_contactloaded_cb(fileIdForContact, response_from
 
     let signature_bytes = socglobal_base64.decodeAsByteArray(contact_json.signature);
     let socrsassa = new SOC_RSASSA_PKCS1_v1_5();
-    let str_to_be_signed = contact_json.encryption + contact_json.signing;
+    let str_to_be_signed = contact_json.email + contact_json.encryption + contact_json.signing;
 
     socglobal_reademail_state.contact_keyfile_json = contact_json;
     socrsassa.beginVerifySignature(socglobal_mypublickey_forverifying, signature_bytes, str_to_be_signed, SOC_readmail_signature_contactfile_signatureverified_cb, 
@@ -332,7 +332,7 @@ function SOC_readmail_signature_contactfile_signatureverified_cb(issignatureveri
     else{
         SOC_updateprogress('warn', 'Could not verify the signature on the contact file in MY google drive.');
         //SOC_alert('Could not verify signature on the contact file (not the incoming email). This is unexpected and should be investigated (or are you using a different private key?');
-        SOC_readmail_signature_verification_failed_update('Failed to verify message signature due because '+
+        SOC_readmail_signature_verification_failed_update('Failed to verify message signature because '+
                                                         'your signature on the contact\'s public key file could not be verified. '+
                                                         'This may happen if you are using a different key than the one you used to sign the '+
                                                         ' contact\'s key. You can retry after reimporting the contact\'s key', false);
@@ -342,7 +342,7 @@ function SOC_readmail_signature_contactfile_signatureverified_cb(issignatureveri
 
 function SOC_readmail_signature_contactfile_signatureverified_error_cb(error){
     SOC_updateprogress('error', 'Error verifying MY signature on the contact file. Error :'+SOC_escapehtml(JSON.stringify(error)));
-    SOC_readmail_signature_verification_failed_update('Failed to verify message signature due because '+
+    SOC_readmail_signature_verification_failed_update('Failed to verify message signature because '+
                                                         'your signature on the contact\'s public key file could not be verified due to an error. '+
                                                         'This may happen if you are using a different key than the one you used to sign the '+
                                                         ' contact\'s key. You can retry after reimporting the contact\'s key', false);

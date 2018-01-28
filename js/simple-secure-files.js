@@ -222,7 +222,7 @@ function SOC_files_loadfile_contact_file_loaded_cb(fileid, response_fromprovider
 
     let signature_bytes = socglobal_base64.decodeAsByteArray(contact_json.signature);
     let socrsassa = new SOC_RSASSA_PKCS1_v1_5();
-    let str_to_be_signed = contact_json.encryption + contact_json.signing;
+    let str_to_be_signed = contact_json.email + contact_json.encryption + contact_json.signing;
 
     socglobal_files_state.contact_keyfile_json = contact_json;
     socrsassa.beginVerifySignature(socglobal_mypublickey_forverifying, signature_bytes, str_to_be_signed, 

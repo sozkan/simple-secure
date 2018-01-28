@@ -77,7 +77,7 @@ function SOC_addnewcontactkey_confirmed(){
     SOC_log(5, 'SOC_addnewcontactkey_confirmed', 'Enter');
     SOC_updateprogress('info','Signing the new contact information using my own private key');
     let socrsassa = new SOC_RSASSA_PKCS1_v1_5();
-    let str_to_sign = socglobal_stateobject.newcontactjson.encryption + socglobal_stateobject.newcontactjson.signing;
+    let str_to_sign = socglobal_stateobject.newcontactjson.email + socglobal_stateobject.newcontactjson.encryption + socglobal_stateobject.newcontactjson.signing;
 
     socrsassa.beginSign(socglobal_myprivatekey_forsigning, str_to_sign, SOC_addnewcontactkey_confirmed_1, SOC_addnewcontactkey_confirmed_error_cb);
 }
@@ -126,7 +126,7 @@ function SOC_addnewcontactkeyform_submit_2_success(filereader_event){
         //////TODO should we reset state here??
         socglobal_stateobject = {};
         socglobal_stateobject.newcontactjson = contactjson;
-        let strtohash = contactjson.encryption + contactjson.signing;
+        let strtohash = contactjson.email + contactjson.encryption + contactjson.signing;
         SOC_sha256(strtohash, SOC_addnewcontactkeyform_submit_3, SOC_addnewcontactkeyform_submit_3_error_cb);
     }
     catch(exx){

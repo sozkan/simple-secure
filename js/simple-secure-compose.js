@@ -72,7 +72,7 @@ function SOC_composeemailform_addrecipient_2(fileId, contact_keyfile){
     let signature_bytes = socglobal_base64.decodeAsByteArray(contact_json.signature);
     let socrsassa = new SOC_RSASSA_PKCS1_v1_5();
     ///we sign and validate only encryption and signing keys. not the entire file
-    let str_to_be_signed = contact_json.encryption + contact_json.signing;
+    let str_to_be_signed = contact_json.email + contact_json.encryption + contact_json.signing;
     socrsassa.beginVerifySignature(socglobal_mypublickey_forverifying, signature_bytes, str_to_be_signed, SOC_composeemailform_addrecipient_3, SOC_composeemailform_addrecipient_error_cb);
 }
 /**
