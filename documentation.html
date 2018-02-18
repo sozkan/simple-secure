@@ -15,7 +15,7 @@
                     It does not include/require any server side code. 
                     (Initially I was hoping that it would work locally (over file:/ protocol) but 
                     Google APIs don't work when the page is loaded over the file protocol. 
-                    And https is requried for the <a href="https://www.w3.org/TR/WebCryptoAPI/" target="_blank">Web Crypto API</a>.) 
+                    And https is required for the <a href="https://www.w3.org/TR/WebCryptoAPI/" target="_blank">Web Crypto API</a>.) 
                     <br>
                     But you can run the application from your local https server. 
                     You will need a Google API key and a client id to do so. (See https://console.developers.google.com)
@@ -49,17 +49,17 @@
                 <li>
                     <b>Only Google APIs:</b>
                         <ul>
-                            <li>The application only uses Google Drive and Gmail REST APIs to access your Google account. 
+                            <li>The application uses only Google Drive and Gmail REST APIs to access your Google account. 
                                 No other protocol, client, library etc is used. 
                             </li>
                             <li>Authentication and authorization are also completely handled by Google APIs 
                                 (standard Google oauth flows).
                             </li>
-                            <li>The following Google drive and gmail API permissions are required for the proper functioning 
+                            <li>The following Google drive and Gmail API permissions are required for the proper functioning 
                                 of this application.
                                 Users will be prompted by Google to grant these permissions to the application.
                                 <ul>
-                                    <li>https://www.googleapis.com/auth/drive.file : Required for Google drive operations</li>
+                                    <li>https://www.googleapis.com/auth/drive : Required for Google drive operations</li>
                                     <li>https://www.googleapis.com/auth/gmail.send : Required for sending emails</li>
                                     <li>https://www.googleapis.com/auth/gmail.readonly : Required for reading emails</li>
                                     <li>https://www.googleapis.com/auth/gmail.modify : Required for saving email drafts</li>
@@ -73,7 +73,7 @@
             Supported Browsers/Environments
         </h2>
         <div>
-            Only tested with the latest versions of Chrome and Firefox on windows 10 and android(chrome only).            
+            Only tested with the latest versions of Chrome and Firefox on windows 10 and Android(chrome only).            
         </div>
         <h2>
             Setting Up Your Own Copy
@@ -115,7 +115,7 @@
             </ol>
         </div>
         <h2>
-            Creating a key
+            Creating Keys
         </h2>
         <div>
             You can create new encryption and signing keys using the application. 
@@ -142,7 +142,7 @@
                 <li>Export the public key from step 3 using window.crypto.subtle.exportKey in jwk format</li>
 
 
-                <li>Generate PBKDF2 cryptokey using the password entered by the user and calling window.crypto.subtle.importKey where exportable=false, usages=['deriveBits', 'deriveKey']</li>
+                <li>Generate PBKDF2 cryptokey using a password entered by the user and calling window.crypto.subtle.importKey where exportable=false, usages=['deriveBits', 'deriveKey']</li>
                 <li>Derive AES-CBC key using the PBKDF2 key from the previous step by calling window.crypto.subtle.deriveKey with the pbkdf2 key, 
                     using (number of iterations selected by the user + 100) 
                     iterations and hash=SHA-256 </li>
@@ -168,7 +168,7 @@
             Key storage
         </h2>
         <div>
-            Your private keys will be automatically uploaded to your google drive. 
+            Your keys will be automatically uploaded to your Google Drive and they will be seamlessly available on any device you use. 
             Private keys will be encrypted as described above.             
             <br>
             You can move or even rename key files in your drive. They are stored and retrieved by using custom mime types.
@@ -184,17 +184,17 @@
         </h2>
         <div>
             You will obtain public key files from your contacts and import them using this application. 
-            Contacts' keys will also be stored in your Google drive. 
+            Contacts' keys will also be stored in your Google Drive and they will be seamlessly available on all your devices. 
             You can move or even rename key files in your drive. They are stored and retrieved by using custom mime types. 
             <br>
             Contact keys will be signed by using your signing private key and the signature will be verified 
-            every time contact keys are used.
+            <b>every time</b> contact keys are used.
             <br>
             For example when you receive an email from Bob, 
             <ol>
                 <li>The application will download Bob's public key file from <u>your</u> Google drive </li>
                 <li>Verify the signature on the contact key file using your signing key (contact file will be signed by your key when you add the contact)</li>
-                <li>Use Bob's key to verify a message signature if and only if the signature was verified in the previous step</li>
+                <li>Use Bob's key to verify the message signature if and only if the signature was verified in the previous step</li>
             </ol>
             This will prevent an attacker who has access to your Google drive to impersonate Bob by changing his key file in your Google drive.
         </div>
@@ -204,7 +204,7 @@
         <div>
             Secure emails will be just regular emails with two additional attachments named simple-secure.message
             and simple-secure.signature. 
-            Regular email body and subject will not be encrypted. 
+            Email body, subject and headers will not be encrypted. 
             Only the simple-secure.message attachment will contain a text part and attachments, all of which will be 
             encrypted and signed.            
             <br>
@@ -300,6 +300,16 @@
         
         
         <h2>
+            Google Drive
+        </h2>
+        <div>
+            The application supports encrypting/decrypting files stored in Google Drive, using the same keys.
+            Google Drive files can be encrypted for others using the same contact keys.
+            
+        </div>
+
+
+        <h2>
             General Security Considerations
         </h2>
         <div>
@@ -319,8 +329,12 @@
                     (keys and cryptographic material).
                 </li>
                 <li>
-                    When reading emails attachments are stored as temporary Blob objects which will be deleted on page 
+                    When reading emails, attachments are stored as temporary Blob objects which will be deleted on page 
                     unload or when another email message is loaded (reasonably short storage of data in clear text). 
+                </li>
+                <li>
+                    You should use a separate ORIGIN for this application to prevent other vulnerable applications from the same 
+                    ORIGIN from causing security issues. 
                 </li>
             </ul>
         </div>
