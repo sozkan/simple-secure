@@ -19,12 +19,14 @@ const SOC_GOOGLE_DISCOVERY_DOCS = [
                                 'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest'
                              ];
 //space separated scope values.            NOTE THE TRAILING SPACE CHARACTERS!
-const SOC_GOOGLE_OAUTH_SCOPES =  'https://www.googleapis.com/auth/drive.file '+
+const SOC_GOOGLE_OAUTH_SCOPES =  'https://www.googleapis.com/auth/drive '+
+                                    'https://www.googleapis.com/auth/drive.file '+
                                     'https://www.googleapis.com/auth/gmail.send '+
                                     'https://www.googleapis.com/auth/gmail.readonly '+
                                     'https://www.googleapis.com/auth/gmail.modify';
 /*
-https://www.googleapis.com/auth/drive.file is required for google drive operations
+https://www.googleapis.com/auth/drive is needed to be able to view and update files shared with me. this permission includes drive.file but adding drive.file as well anyway
+https://www.googleapis.com/auth/drive.file is required for google drive operations (only allows access to my own files created using this application)
 https://www.googleapis.com/auth/gmail.send is required for sending emails
 https://www.googleapis.com/auth/gmail.readonly is required for reading emails
 https://www.googleapis.com/auth/gmail.modify is required for "save as draft" feature and for updating emails as "read"

@@ -17,6 +17,19 @@ input {
 h1{
     font-size: 1.2em;
 }
+h4{
+    margin-top:3px;
+    margin-bottom: 2px;
+}
+a, .ss-link {
+    text-decoration: underline;
+    cursor: pointer;
+    color:blue;
+}
+a:visited, .ss-link:visited {
+    color:blue;
+}
+
 #maincontainer{
     /*
     display: flex;
@@ -407,15 +420,16 @@ input [type=submit]{
 #composeemailform_recipientsdiv div{
     float:left;
 }
-#composeemailform_added_recipientsdiv div{
+#composeemailform_added_recipientsdiv div, #edittextfileform_recipientsdiv div, #editbinaryfileform_recipientsdiv div{
     float:left;
     border:1px solid #fff;
 }
-#composeemailform_added_recipientsdiv div:hover{
+#composeemailform_added_recipientsdiv div:hover, #edittextfileform_recipientsdiv div:hover, #editbinaryfileform_recipientsdiv div:hover{
     background-color: #f4f4f4;
     border:1px solid #ddd;
+    display: inline-block;
 }
-#composeemailform_added_recipientsdiv{
+#composeemailform_added_recipientsdiv, #edittextfileform_recipientsdiv, #editbinaryfileform_recipientsdiv{
     margin-top:2px;
     margin-bottom: 5px;
     padding-top:3px;
@@ -423,20 +437,28 @@ input [type=submit]{
     border-top:1px solid #f4f4f4;
     width:100%;    
 }
-#composeemailform_added_recipientsdiv button{
+#composeemailform_added_recipientsdiv button, #edittextfileform_recipientsdiv button, #editbinaryfileform_recipientsdiv button{
     border:1px solid #ccc; 
     padding:1px 1px 1px 1px;
     font-size: smaller;    
     vertical-align: top;
+    margin-top: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 2px;
 }
-#composeemailform_added_recipientsdiv button:hover{
+#composeemailform_added_recipientsdiv button:hover, #edittextfileform_recipientsdiv button:hover, #editbinaryfileform_recipientsdiv button:hover{
     color:red;
 }
-#composeemailform_recipientsdiv_table button{
+#composeemailform_recipientsdiv_table button, #edittextfileform_contactsdiv button, #editbinaryfileform_contactsdiv button{
     border:1px solid #ccc; 
     padding:1px 1px 1px 1px;
+    margin-top: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 2px;
 }
-#composeemailform_recipientsdiv_table button:enabled:hover{
+#composeemailform_recipientsdiv_table button:enabled:hover, #edittextfileform_contactsdiv button:enabled:hover, #editbinaryfileform_contactsdiv button:enabled:hover{
     color:blue;
 }
 
@@ -679,4 +701,21 @@ input[type="radio"] {
     font-size: smaller;
     cursor:  help;
     vertical-align: middle;
+}
+
+#editbinaryfileform_originalrecipientsdiv ul, #edittextfileform_originalrecipientsdiv ul{
+    margin-top:4px;
+    margin-bottom:2px;
+}
+
+.sharing-options-div{
+    clear: both;
+    display: block;
+}
+#edittextfileform .sharing-options-div label, #editbinaryfileform .sharing-options-div label{
+    font-weight: normal;        
+}
+
+.sharing-options-div label:hover{
+    color:#000088;    
 }

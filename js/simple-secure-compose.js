@@ -157,7 +157,7 @@ function SOC_composeemailform_renderrecipients(){
             continue;
         }
         let tmpescapedemail = SOC_escapehtml(tmpemail);
-        generatedhtml +='<div>'+tmpescapedemail+'<button onclick="SOC_composeemailform_remove_recipient(\''+tmpescapedemail
+        generatedhtml +='<div>'+tmpescapedemail+'<button type="button" onclick="SOC_composeemailform_remove_recipient(\''+tmpescapedemail
                                                     +'\')">Remove</button></div>';
     }    
     targetdiv.innerHTML = generatedhtml;

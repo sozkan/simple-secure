@@ -380,10 +380,10 @@ class SOC_GoogleClient extends SOC_Base{
     }
     
     /**
-     * 
-     * @param {type} finished_callback
-     * @param {type} error_callback
-     * @returns {undefined}
+     * gets the list of labels for this user from google drive
+     * @param {function} finished_callback
+     * @param {function} error_callback
+     * @returns {void}
      */
     listLabels(finished_callback, error_callback){
         SOC_log(5, 'SOC_GoogleClient.listLabels', 'Enter'); 
@@ -536,14 +536,11 @@ class SOC_GoogleClient extends SOC_Base{
         gapi.client.drive.files.list({
             'orderBy': 'name',
             'pageSize':20,
-            
-            /*
-             * TODO retrive additional fields like 
-                "sharingUser": {"kind": "drive#user", "displayName": string, "photoLink": string, "me": boolean, "permissionId": string, "emailAddress": string},
-                "owners": [{"kind": "drive#user", "displayName": string, "photoLink": string, "me": boolean, "permissionId": string, "emailAddress": string}  ],
-                "teamDriveId": string,
-             */
-            'fields': 'files(name,id, createdTime, modifiedTime, trashed, starred, properties(originalMimeType),webViewLink, webContentLink)',
+            'corpora':SOC_GOOGLE_DRIVE_CORPORA,            
+            'fields': 'files(name,id, createdTime, modifiedTime, trashed, starred, webViewLink, webContentLink, ownedByMe, shared, '+
+                    'properties(originalMimeType), '+
+                    'sharingUser(displayName, me, permissionId, emailAddress) '+
+                    ')',
             'q': qparam
         }).then(
                 function(response){
@@ -614,6 +611,40 @@ class SOC_GoogleClient extends SOC_Base{
            );            
         
         SOC_log(5, 'SOC_GoogleClient.saveFile', 'Exit');                 
+    }
+    
+    /**
+     * share a file with a contact
+     * @param {string} fileId
+     * @param {string} contact_email
+     * @param {string} permission_name 'reader' or 'writer'
+     * @param {boolean} motify send notification email or not
+     * @param {function} finished_callback
+     * @param {function} error_callback
+     * @returns {void}
+     */
+    shareFile(fileId, contact_email, permission_name, notify, finished_callback, error_callback){
+        SOC_log(5, 'SOC_GoogleClient.shareFile', 'Enter'); 
+        gapi.client.request({
+                'path': '/drive/v3/files/' + fileId + '/permissions?sendNotificationEmail=' + notify,
+                'method': 'POST',
+                'headers': {
+                    'Content-Type': 'application/json'
+                },
+                'body':{
+                     'role': permission_name, 
+                     'type': 'user',
+                     'emailAddress': contact_email
+                }
+        }).then(
+                function(response){
+                    finished_callback(fileId, contact_email, response); 
+                },
+                function(response){
+                    error_callback(fileId, contact_email, response); 
+                }
+            );
+        SOC_log(5, 'SOC_GoogleClient.shareFile', 'Exit');          
     }
 }
 

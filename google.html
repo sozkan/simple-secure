@@ -62,7 +62,7 @@
 <!-- begin unauthenticated contents -->
 <div id="loginbuttonsdiv">
     <div style="text-align:center; width:100%;">
-        <button id="btnlogingoogle" onclick="SOC_sign_in()"><img src="img/google.png" border='0'></button>
+        <button type="button" id="btnlogingoogle" onclick="SOC_sign_in()"><img src="img/google.png" border='0'></button>
     </div>
     <div>
         This application provides end-to-end (browser to browser, even Google won't have 
@@ -289,8 +289,9 @@
                         <div class="informative-msg">
                             <b>Send</b> : The message will be sent immediately. 
                             <br>
-                            <b>Save as draft and send later via gmail</b>: The message will be saved as a draft. 
-                            YOU WILL NOT BE ABLE TO MODIFY OR ADD ENCRYPTED CONTENT LATER
+                            <b>Save as draft</b>: The message will be saved as a draft. 
+                            YOU WILL NOT BE ABLE TO MODIFY OR ADD ENCRYPTED CONTENT LATER. You will be able to send it via 
+                            Gmail later.
                         </div>
                     </form>
                 </div>
@@ -307,10 +308,10 @@
                             <div id="inboxfilterform_shortcutsdiv" class="input-sidenote">
                                 Same syntax as gmail. Max 20 results will be shown.
                                 Quick filters:
-                                <button onclick="SOC_inbox_filter_shortcut('label:inbox is:unread')">Unread in inbox</button>
-                                <button onclick="SOC_inbox_filter_shortcut('label:inbox')">All in inbox</button>
-                                <button onclick="SOC_inbox_filter_shortcut('is:unread')">Unread</button>
-                                <button onclick="SOC_inbox_filter_shortcut('')">All</button>
+                                <button type="button" onclick="SOC_inbox_filter_shortcut('label:inbox is:unread')">Unread in inbox</button>
+                                <button type="button" onclick="SOC_inbox_filter_shortcut('label:inbox')">All in inbox</button>
+                                <button type="button" onclick="SOC_inbox_filter_shortcut('is:unread')">Unread</button>
+                                <button type="button" onclick="SOC_inbox_filter_shortcut('')">All</button>
                             </div>
 
                         </form>
@@ -325,7 +326,14 @@
                     <h1>Files</h1>
                     <div id="files_addnewfilelinksdiv">                         
                         <a href="#addtextfile">Add new text file</a>
-                        <a href="#addbinaryfile">Upload a new file</a>
+                        <a href="#addbinaryfile">Upload a new file</a>                         
+                        <form style="display:inline-block" autocomplete="off" method="post" onsubmit="SOC_files_localfileform_submit(); return false;" name="files_localfileform" id="files_localfileform">
+                            <label for="fileslocalfileinput" class="ss-link">
+                                Open Local File
+                            </label>
+                            <input type="file" name="fileslocalfileinput" id="fileslocalfileinput" style="display:none" onchange="SOC_files_localfileform_submit()">
+                            <input type="submit" value="Load" style="display:none">
+                        </form>
                     </div>
                     <div id="filesfilterdiv">
                         <form method="post" autocomplete="off" name="filesfilterform" id="filesfilterform" onsubmit="try{SOC_files_filterform_submit();} catch(ex){SOC_log(1,'filesfilterform onsubmit',ex);} return false;">
@@ -339,11 +347,16 @@
                                 To search in file names use <b>name=&quot;string&quot;</b> or 
                                 <b>name contains &quot;string&quot;</b>, 
                                 to search for starred use <b>starred=true</b>.
+                                <br>
+                                To search for files shared with you, use <b>sharedWithMe=true</b>.
+                                <br>
                                 Add <b>and</b> or <b>or</b> between terms. For example : 
                                 <em>trashed=false and starred=true and name contains &quot;secret&quot;</em>.
+                                <br>
                                 See <a href="https://developers.google.com/drive/v3/web/search-parameters" target="_blank">https://developers.google.com/drive/v3/web/search-parameters</a>
                                 for the exact syntax. (This will be improved in a future release)
-                                Max 20 results will be shown.
+                                <br>
+                                Max 20 results will be shown (there is no paging yet).
                             </div>
                         </form>
                     </div>
@@ -374,11 +387,55 @@
                                     even if the name of the selected new file is different. 
                                 </div>
                             </div>
-                        </div>   
+                        </div>  
+                            <div id="editbinaryfileform_originalrecipientsdiv">
+                            </div>
+                        <div id="editbinaryfileform_recipients_containerdiv">                                                    
+                            <h4>Contacts (click contacts to add) : </h4>
+                            <div id="editbinaryfileform_contactsdiv">
+                            </div>
+
+                            <h4>
+                                When you save the file, the following users will be able to decrypt it 
+                                (besides you) : 
+                            </h4>
+                            <div id="editbinaryfileform_recipientsdiv">
+                                No one
+                            </div>
+                            
+                        </div>
+                        <div class="sharing-options-div">
+                            <h4>Google Drive Sharing Options</h4>
+                            <div>
+                                <label for="editbinaryfileform_sharewithrcpts_0">
+                                    <input type="radio" name="editbinaryfileform_sharewithrcpts" id="editbinaryfileform_sharewithrcpts_0" value="0" checked>
+                                    Do nothing, don't change. (You can share the file later using Google Drive.)
+                                </label>
+                            </div>
+                            <div>
+                                <label for="editbinaryfileform_sharewithrcpts_1">
+                                    <input type="radio" name="editbinaryfileform_sharewithrcpts" id="editbinaryfileform_sharewithrcpts_1" value="1">
+                                    Share the file with added contacts and grant them READ access to the file
+                                </label>
+                            </div>
+                            <div>
+                                <label for="editbinaryfileform_sharewithrcpts_2">
+                                    <input type="radio" name="editbinaryfileform_sharewithrcpts" id="editbinaryfileform_sharewithrcpts_2" value="2">
+                                    Share the file with added contacts and grant them WRITE access to the file
+                                </label>
+                            </div>
+                            <div>
+                                <label for="editbinaryfileform_notifyshared">
+                                    <input type="checkbox" name="editbinaryfileform_notifyshared" id="editbinaryfileform_notifyshared" value="1">
+                                    Let Google Drive send notification emails after sharing
+                                </label>
+                            </div>
+                        </div>
+
     
                         <div class="form-buttons" id="editbinaryfileform_buttonsdiv">
                             <input type="reset" value="Reset">
-                            <input type="submit" value="Save">
+                            <input type="submit" value="Save To Google Drive">
                         </div>
                     </form>
                 </div>
@@ -403,14 +460,59 @@
                                 <textarea name="filecontents" id="edittextfileform_filecontents" rows="20" wrap="soft"></textarea>
                             </div>
                         </div>
+                        <div id="edittextfileform_recipients_containerdiv">
+                            <div id="edittextfileform_originalrecipientsdiv">
+                            </div>
+
+                            <h4>Contacts (click contacts to add) : </h4>
+                            <div id="edittextfileform_contactsdiv">
+                            </div>
+
+                            <h4>
+                                When you save the file, the following users will be able to decrypt it 
+                                (besides you) : 
+                            </h4>
+                            <div id="edittextfileform_recipientsdiv">
+                                No one
+                            </div>
+                        </div> 
+                        <div class="sharing-options-div">
+                            <h4>Google Drive Sharing Options</h4>
+                            <div>
+                                <label for="edittextfileform_sharewithrcpts_0">
+                                    <input type="radio" name="edittextfileform_sharewithrcpts" id="edittextfileform_sharewithrcpts_0" value="0" checked>
+                                    Do nothing, don't change. (You can share the file later using Google Drive.)
+                                </label>
+                            </div>
+                            <div>
+                                <label for="edittextfileform_sharewithrcpts_1">
+                                    <input type="radio" name="edittextfileform_sharewithrcpts" id="edittextfileform_sharewithrcpts_1" value="1">
+                                    Share the file with added contacts and grant them READ access to the file
+                                </label>
+                            </div>
+                            <div>
+                                <label for="edittextfileform_sharewithrcpts_2">
+                                    <input type="radio" name="edittextfileform_sharewithrcpts" id="edittextfileform_sharewithrcpts_2" value="2">
+                                    Share the file with added contacts and grant them WRITE access to the file
+                                </label>
+                            </div>
+                            <div>
+                                <label for="edittextfileform_notifyshared">
+                                    <input type="checkbox" name="edittextfileform_notifyshared" id="edittextfileform_notifyshared" value="1">
+                                    Let Google Drive send notification emails after sharing
+                                </label>
+                            </div>
+                        </div>
+                                                   
+                            
                         <div class="form-buttons" id="edittextfileform_buttonsdiv">
                             <input type="reset" value="Reset">
-                            <input type="submit" value="Save">
+                            <input type="submit" value="Save To Google Drive">
                         </div>
                     </form>
                 </div>
                 <div id="progressupdatediv" class="ui-card-div">
-                    <h1>Logs <button onclick="SOC_progressupdatediv_textarea_copy()" style="float:right;">Copy All Logs</button></h1>
+                    <h1>Logs <button type="button" onclick="SOC_progressupdatediv_textarea_copy()" style="float:right;">Copy All Logs</button></h1>
                     
                     <textarea id="progressupdatediv_textarea"></textarea>
                     <!--
@@ -425,7 +527,7 @@
     <div id="fullscreenalertdiv_msgbox" onclick="SOC_alert_close()">
         <div id="fullscreenalertdiv_msgbox_msg"></div>
         <div id="fullscreenalertdiv_buttons">
-            <button onclick="SOC_alert_close()">Close</button> 
+            <button type="button" onclick="SOC_alert_close()">Close</button> 
             <div class="input-sidenote">(Or press Esc or click/tap anywhere on the screen)</div>
         </div>
     </div>

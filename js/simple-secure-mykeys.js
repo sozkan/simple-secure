@@ -254,7 +254,7 @@ function SOC_loadmyprivatekey_submit_8(publickeys_sha256hash_bytes){
     let publickeycheckinfo = SOC_sha256_to_manualcheckvalues(publickeys_sha256hash_bytes);
     
     let targetdiv = SOC_gebi('currentloadedkeyinfodiv');
-    let htmlstr =   ' <span id="currentloadedkeyinfo_namespan" onclick="SOC_showhide_currentkey_details()">Current Key:<b>'+SOC_escapehtml(socglobal_stateobject.mycurrentloadedkey_name)+'</b> <sup>(click for details)</sup></span>'+ 
+    let htmlstr =   ' <span id="currentloadedkeyinfo_namespan" onclick="SOC_showhide_currentkey_details()">Current Key:<b>'+SOC_escapehtml(socglobal_stateobject.mycurrentloadedkey_name)+'</b> (click for details)</span>'+ 
                     ' <div id="currentloadedkeyinfo_details"><span>Generated: '+SOC_escapehtml(socglobal_stateobject.mycurrentloadedkey_generated)+ '</span>'+
                     ' <span>Checksum 1: ' + publickeycheckinfo.checksum +'</span> '+
                     ' <span>Checksum 2: '+publickeycheckinfo.foursum+'</span> '+

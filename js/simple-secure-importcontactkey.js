@@ -29,7 +29,7 @@ function SOC_contacts_loaded_cb(response){
             //also update the global contacts list
             socglobal_mycontactslist[tmpcontact.properties.email] = tmpcontact.id;
             
-            htmlfor_compose+='<div><button onclick="SOC_composeemailform_recipient_clicked(this, \''+tmpescapedemail+'\')">'+tmpescapedemail+'</button></div>';
+            htmlfor_compose+='<div><button type="button" type="button" onclick="SOC_composeemailform_recipient_clicked(this, \''+tmpescapedemail+'\')">'+tmpescapedemail+'</button></div>';
         }
         htmlfor_contacts +='</table>';
         htmlfor_compose +='</table>';
@@ -122,7 +122,7 @@ function SOC_addnewcontactkeyform_submit_2_success(filereader_event){
     SOC_updateprogress('info','Finished reading the new contact file');
     
     try{
-        let contactjson = JSON.parse(filereader_event.srcElement.result);
+        let contactjson = JSON.parse(filereader_event.target.result);
         //////TODO should we reset state here??
         socglobal_stateobject = {};
         socglobal_stateobject.newcontactjson = contactjson;
